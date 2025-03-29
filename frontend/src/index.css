@@ -1,0 +1,66 @@
+@import url("https://fonts.googleapis.com/css2?family=Audiowide&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --color-darked: #000;
+  --color-light: #f9fafb;
+
+  --color-cardDark: #262626;
+
+  --font-AudioWide: "AudioWide", serif;
+
+  --text-textXxl: 89px;
+  --text-textXl: 72px;
+  --text-textLg: 40px;
+  --text-textMd: 32px;
+  --text-textSm: 18px;
+  --text-textXs: 14px;
+}
+
+@layer base {
+  body {
+    font-family: "Inter", sans-serif;
+    background-color: var(--color-darked);
+  }
+  h1 {
+    font-size: var(--text-textXxl);
+    font-family: var(--font-AudioWide);
+    font-weight: 700;
+  }
+  h2 {
+    font-size: var(--text-textLg);
+    font-weight: 700;
+  }
+  h3 {
+    font-size: var(--text-textMd);
+  }
+  h4 {
+    font-size: var(--text-textSm);
+  }
+  p {
+    font-size: var(--text-textXs);
+  }
+}
+
+@layer utilities {
+  .txtGradient {
+    @apply bg-gradient-to-r from-blue-500 to-purple-500 text-transparent bg-clip-text;
+  }
+
+  .flexCenter {
+    @apply flex justify-center items-center;
+  }
+  .flexBetween {
+    @apply flex justify-between items-center;
+  }
+}
+
+@layer components {
+  .card {
+    @apply flex flex-1 flex-col gap-2 rounded-2xl py-4 pl-6 pr-1 bg-cardDark;
+  }
+  .cardSettings {
+    @apply bg-[#0f0f0f] py-4 pl-6 pr-1 rounded-lg w-full h-[64px] hover:bg-cardDark duration-200 ease-in-out cursor-pointer;
+  }
+}
