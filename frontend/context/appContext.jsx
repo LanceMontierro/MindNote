@@ -1,4 +1,4 @@
-import { useState, useContext, createContext } from "react";
+import { useState, useContext, createContext, useEffect } from "react";
 import { useUser } from "@clerk/clerk-react";
 import axios from "axios";
 const AppContext = createContext();
@@ -11,22 +11,65 @@ const ContextApi = ({ children }) => {
   const { user, isSignedIn } = useUser();
   const [userAccount, setUserAccount] = useState("");
   const [notes, setNotes] = useState([]);
-  const [reminders, setReminders] = useState([]);
-  const [pinNotes, setPinNotes] = useState([]);
-  const [archives, setArchives] = useState([]);
-  // const [toggleNav, setToggleNav] = useState(false);
-  // const [toggleNotes, setToggleNotes] = useState(false);
-
   const [active, setActive] = useState("Home");
 
-  const createNewNote = async () => {
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  useEffect(() => {
+    if (isSignedIn && user) {
+      setUserAccount(user);
+    }
+  }, [isSignedIn, user]);
+
+  const fetchNotes = async () => {
+    if (!userAccount) {
+      console.error("User account is not set. Cannot fetch notes.");
+      return;
+    }
+
     try {
-    } catch (error) {}
+      const response = await axios.get(
+        `${API_URL}/notes/get-notes?uid=${userAccount.id}`
+      );
+
+      if (response.data && response.data.notes) {
+        setNotes(response.data.notes);
+      } else {
+        console.error("Invalid API response:", response.data);
+      }
+    } catch (error) {
+      console.error(
+        "Error fetching notes:",
+        error.response ? error.response.data : error
+      );
+    }
   };
 
-  const getNote = async () => {
+  useEffect(() => {
+    if (userAccount) {
+      fetchNotes();
+    }
+  }, [userAccount]);
+
+  const createNewNote = async (title, content) => {
+    if (!userAccount) {
+      console.error("Please sign in to create a note.");
+      return;
+    }
+
     try {
-    } catch (error) {}
+      const response = await axios.post(`${API_URL}/notes/create-note`, {
+        title: title,
+        content: content,
+        userId: userAccount.id,
+      });
+
+      if (response.data && response.data.note) {
+        setNotes((prevNotes) => [...prevNotes, response.data.note]);
+      }
+    } catch (error) {
+      console.error("Error creating note:", error);
+    }
   };
 
   const updateNote = async () => {
@@ -53,14 +96,9 @@ const ContextApi = ({ children }) => {
         setNotes,
         active,
         setActive,
-        reminders,
-        setReminders,
-        pinNotes,
-        setPinNotes,
-        archives,
-        setArchives,
         userAccount,
         setUserAccount,
+        createNewNote,
       }}
     >
       {children}

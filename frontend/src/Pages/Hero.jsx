@@ -10,7 +10,7 @@ const Hero = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isSignedIn) {
+    if (isSignedIn) {
       navigate("/home");
     }
   }, [isSignedIn, navigate]);

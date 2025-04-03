@@ -19,10 +19,8 @@ const Sidebar = () => {
             <button
               key={i}
               onClick={() => handleActive(nav.name)}
-              className={`flex items-center py-3 px-2 gap-2 rounded-2xl  ${
-                active === nav.name
-                  ? "dark:bg-cardDark bg-[#dedede] border-[#fff] "
-                  : ""
+              className={`flex items-center py-3 px-2 gap-2 rounded-2xl text-light  ${
+                active === nav.name ? "bg-cardDark border-[#fff] " : ""
               }`}
             >
               <Icon className="text-[22px]" />
@@ -34,7 +32,7 @@ const Sidebar = () => {
         })}
       </div>
 
-      <div className="border border-cardDark py-3 px-2 gap-2 rounded-2xl mt-6">
+      <div className="border border-cardDark py-3 px-2 gap-2 rounded-2xl mt-6 text-light">
         <h4 className="text-center font-bold txtGradient">Follow me on</h4>
         <div className="flex flex-col items-center">
           <a

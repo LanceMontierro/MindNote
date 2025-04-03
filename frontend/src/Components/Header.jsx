@@ -23,9 +23,9 @@ const Header = () => {
             <div className="w-28 h-28 rounded-full bg-gray-200" />
           )}
           {user && user.fullName ? (
-            <p className="dark:text-light text-darked">{user.fullName}</p>
+            <p className="text-light ">{user.fullName}</p>
           ) : (
-            <p className="dark:text-light text-darked">Guest</p>
+            <p className="text-light ">Guest</p>
           )}
         </div>
       </div>
