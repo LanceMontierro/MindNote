@@ -1,6 +1,7 @@
 import { useState, useContext, createContext, useEffect } from "react";
 import { useUser } from "@clerk/clerk-react";
 import axios from "axios";
+
 const AppContext = createContext();
 
 export function useAppContext() {
@@ -11,6 +12,10 @@ const ContextApi = ({ children }) => {
   const { user, isSignedIn } = useUser();
   const [userAccount, setUserAccount] = useState("");
   const [notes, setNotes] = useState([]);
+  const [pinnedNotes, setPinnedNotes] = useState([]);
+  const [archivedNotes, setArchivedNotes] = useState([]);
+  const [titleState, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [active, setActive] = useState("Home");
 
   const API_URL = import.meta.env.VITE_API_URL;
@@ -32,8 +37,8 @@ const ContextApi = ({ children }) => {
         `${API_URL}/notes/get-notes?uid=${userAccount.id}`
       );
 
-      if (response.data && response.data.notes) {
-        setNotes(response.data.notes);
+      if (response.data) {
+        setNotes(response.data);
       } else {
         console.error("Invalid API response:", response.data);
       }
@@ -65,26 +70,79 @@ const ContextApi = ({ children }) => {
       });
 
       if (response.data && response.data.note) {
-        setNotes((prevNotes) => [...prevNotes, response.data.note]);
+        fetchNotes();
       }
     } catch (error) {
       console.error("Error creating note:", error);
     }
   };
 
-  const updateNote = async () => {
+  const updateNote = async (title, content, id) => {
+    console.log("🔄 updateNote called with:", { title, content, id });
     try {
-    } catch (error) {}
+      if (!userAccount) {
+        console.error("Please sign in to update a note.");
+        return;
+      }
+
+      const response = await axios.patch(`${API_URL}/notes/update-note`, {
+        title: title,
+        content: content,
+        userId: userAccount.id,
+        id: id,
+      });
+      console.log("✅ updateNote response:", response);
+
+      if (response.status === 200) {
+        await fetchNotes();
+      }
+    } catch (error) {
+      console.error("Error updating note:", error);
+    }
   };
 
-  const deleteNote = async () => {
+  const deleteNote = async (id) => {
     try {
-    } catch (error) {}
+      if (!userAccount) {
+        console.error("Please sign in to update a note.");
+        return;
+      }
+
+      const response = await axios.delete(`${API_URL}/notes/delete-note`, {
+        data: { id, userId: userAccount.id },
+      });
+
+      if (response.status === 200) {
+        setNotes((prevNotes) => prevNotes.filter((note) => note._id !== id));
+      }
+    } catch (error) {
+      console.error("Error deleting note:", error);
+    }
   };
 
-  const pinNote = async () => {
+  const pinNote = async (id, title, content, createdAt) => {
+    if (!userAccount) {
+      console.error("Please sign in to pin a note.");
+      return;
+    }
+
     try {
-    } catch (error) {}
+      const response = await axios.post(`${API_URL}/notes/pin-note`, {
+        id: id,
+        userId: userAccount.id,
+        title: title,
+        content: content,
+        createdAt: createdAt,
+      });
+
+      if (response.status === 200) {
+        await fetchNotes();
+      }
+
+      console.log("✅ Pin note response:", response);
+    } catch (error) {
+      console.error("Error pinning note:", error);
+    }
   };
 
   return (
@@ -99,6 +157,13 @@ const ContextApi = ({ children }) => {
         userAccount,
         setUserAccount,
         createNewNote,
+        updateNote,
+        description,
+        setDescription,
+        titleState,
+        setTitle,
+        deleteNote,
+        pinNote,
       }}
     >
       {children}

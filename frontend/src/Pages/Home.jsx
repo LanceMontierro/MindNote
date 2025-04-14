@@ -5,14 +5,22 @@ import { RiInboxArchiveLine } from "react-icons/ri";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaTrashCan, FaBook } from "react-icons/fa6";
 import { useState } from "react";
-
+import { Link } from "react-router-dom";
 import { useAppContext } from "./../../context/appContext";
 
 const Home = () => {
   const [showModal, setShowModal] = useState(false);
-  const [titleState, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const { createNewNote, notes } = useAppContext();
+
+  const {
+    createNewNote,
+    notes,
+    titleState,
+    setTitle,
+    description,
+    setDescription,
+    deleteNote,
+    pinNote,
+  } = useAppContext();
   const [showOptions, setShowOptions] = useState({});
 
   const toggleOptions = (noteId) => {
@@ -68,18 +76,31 @@ const Home = () => {
       <div className="flex flex-col flex-wrap gap-3 mt-2 relative">
         {notes && notes.length > 0 ? (
           notes.map((note) => (
-            <div key={note._id} className="relative">
+            <Link
+              to={`/note/${note._id}`}
+              key={note._id && note._id}
+              className="relative"
+            >
               <div className="bg-[#262626] py-4 pl-6 pr-1 rounded-lg flexBetween w-full">
-                <div className="flex items-center gap-2 w-full">
+                <div className="flex items-center gap-6 w-full">
                   <button>
-                    <FaBook />
+                    {note.isPinned ? <TbPinnedFilled /> : <FaBook />}
                   </button>
-                  <p>{note.title}</p>
+                  <div className="flex flex-col gap-1 w-full justify-center">
+                    <p>{note.title}</p>
+                    <p className="text-gray-500 text-[12px]">
+                      {note.createdAt && note.createdAt.split("T")[0]}
+                    </p>
+                  </div>
                 </div>
 
                 <button
                   className="mr-5 cursor-pointer"
-                  onClick={() => toggleOptions(note._id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    toggleOptions(note._id);
+                  }}
                 >
                   <BsThreeDotsVertical size={20} className="text-gray-500" />
                 </button>
@@ -91,17 +112,37 @@ const Home = () => {
                     <RiInboxArchiveLine size={20} />
                     <p>Add to Archived</p>
                   </button>
-                  <button className="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-200">
-                    <FaTrashCan />
-                    <p>Delete</p>
-                  </button>
-                  <button className="flex items-center gap-2 w-full text-left px-4 py-4 hover:bg-gray-200 rounded-lg">
+
+                  <button
+                    className="flex items-center gap-2 w-full text-left px-4 py-4 hover:bg-gray-200"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      pinNote(
+                        note._id,
+                        note.title,
+                        note.content,
+                        note.createdAt
+                      );
+                    }}
+                  >
                     <TbPinnedFilled />
                     <p>Pin Note</p>
                   </button>
+                  <button
+                    className="flex items-center gap-2 w-full text-left px-4 py-3 hover:bg-gray-200 rounded-lg"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      deleteNote(note._id);
+                    }}
+                  >
+                    <FaTrashCan />
+                    <p>Delete Note</p>
+                  </button>
                 </div>
               )}
-            </div>
+            </Link>
           ))
         ) : (
           <p>No notes available</p>

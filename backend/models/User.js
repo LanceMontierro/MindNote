@@ -10,8 +10,23 @@ const userSchema = mongoose.model(
       {
         title: { type: String, required: true },
         content: { type: String, required: true },
+        createdAt: { type: Date, default: Date.now },
         pinned: { type: Boolean, default: false },
-        createdAt: { type: Date, default: Date.now() },
+      },
+    ],
+    pinnedNotes: [
+      {
+        title: { type: String, required: true },
+        content: { type: String, required: true },
+        createdAt: { type: Date, default: Date.now },
+        pinned: { type: Boolean, default: true },
+      },
+    ],
+    archivedNotes: [
+      {
+        title: { type: String, required: true },
+        content: { type: String, required: true },
+        createdAt: { type: Date, default: Date.now },
       },
     ],
   })

@@ -73,11 +73,20 @@ export const updateNote = async (req, res) => {
       return res.status(404).json({ message: "Note not found" });
     }
 
-    note.title = title || note.title;
-    note.content = content || note.content;
-    note.pinned = pinned !== undefined ? pinned : note.pinned;
+    // const noteId = String(id);
+    // const existingTitle = user.notes.find(
+    //   (n) => n.title === title && n._id !== noteId
+    // );
 
+    // if (existingTitle) {
+    //   return res
+    //     .status(400)
+    //     .json({ message: "Note with the same title already exists" });
+    // }
+    if (title) note.title = title;
+    if (content) note.content = content;
     await user.save();
+
     res.status(200).json({ message: "Note updated successfully", note });
   } catch (error) {
     console.error("Error updating note", error);
