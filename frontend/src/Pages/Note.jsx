@@ -20,8 +20,9 @@ const Note = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const navigate = useNavigate();
 
+  const note = notes.find((note) => note._id === id);
+
   useEffect(() => {
-    const note = notes.find((note) => note._id === id);
     if (note) {
       setTitleState(note.title);
       setContent(note.content);
@@ -158,9 +159,18 @@ const Note = () => {
               <div className="flex gap-2 items-center max-[640px]:flex-col">
                 <button
                   className="bg-blue-500 text-white px-4 py-2 rounded w-full"
-                  onClick={() => {
-                    updateNote(title, content, id);
-                    setShowEditModal(false);
+                  onClick={async () => {
+                    const result = await updateNote(title, content, id);
+                    if (result?.success) {
+                      setShowEditModal(false);
+                    } else if (result?.error) {
+                      alert(result.error);
+
+                      if (note) {
+                        setTitleState(note.title);
+                        setContent(note.content);
+                      }
+                    }
                   }}
                 >
                   Update Note

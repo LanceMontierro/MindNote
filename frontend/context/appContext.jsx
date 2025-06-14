@@ -1,4 +1,4 @@
-import { useState, useContext, createContext, useEffect } from "react";
+import { useState, useContext, createContext, useEffect, useMemo } from "react";
 import { useUser } from "@clerk/clerk-react";
 import axios from "axios";
 
@@ -12,11 +12,14 @@ const ContextApi = ({ children }) => {
   const { user, isSignedIn } = useUser();
   const [userAccount, setUserAccount] = useState("");
   const [notes, setNotes] = useState([]);
-  const [pinnedNotes, setPinnedNotes] = useState([]);
   const [archivedNotes, setArchivedNotes] = useState([]);
   const [titleState, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [active, setActive] = useState("Home");
+  const pinnedNotes = useMemo(
+    () => notes.filter((note) => note.pinned),
+    [notes]
+  );
 
   const API_URL = import.meta.env.VITE_API_URL;
 
@@ -36,6 +39,8 @@ const ContextApi = ({ children }) => {
       const response = await axios.get(
         `${API_URL}/notes/get-notes?uid=${userAccount.id}`
       );
+
+      console.log(userAccount.id);
 
       if (response.data) {
         setNotes(response.data);
@@ -78,7 +83,6 @@ const ContextApi = ({ children }) => {
   };
 
   const updateNote = async (title, content, id) => {
-    console.log("🔄 updateNote called with:", { title, content, id });
     try {
       if (!userAccount) {
         console.error("Please sign in to update a note.");
@@ -91,13 +95,21 @@ const ContextApi = ({ children }) => {
         userId: userAccount.id,
         id: id,
       });
-      console.log("✅ updateNote response:", response);
+      console.log("✅ updateNote response:", response.data);
 
       if (response.status === 200) {
         await fetchNotes();
+        return { success: true };
       }
     } catch (error) {
-      console.error("Error updating note:", error);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        return { error: error.response.data.message };
+      }
+      return { error: "Failed to update note." };
     }
   };
 
@@ -120,28 +132,22 @@ const ContextApi = ({ children }) => {
     }
   };
 
-  const pinNote = async (id, title, content, createdAt) => {
-    if (!userAccount) {
-      console.error("Please sign in to pin a note.");
-      return;
-    }
-
+  const pinNote = async (note) => {
     try {
       const response = await axios.post(`${API_URL}/notes/pin-note`, {
-        id: id,
+        id: note._id,
         userId: userAccount.id,
-        title: title,
-        content: content,
-        createdAt: createdAt,
       });
 
-      if (response.status === 200) {
-        await fetchNotes();
-      }
+      console.log(response.data);
 
-      console.log("✅ Pin note response:", response);
+      setNotes((prevNotes) =>
+        prevNotes.map((n) =>
+          n._id === note._id ? { ...n, pinned: !n.pinned } : n
+        )
+      );
     } catch (error) {
-      console.error("Error pinning note:", error);
+      console.error("Failed to pin note", error);
     }
   };
 
@@ -164,6 +170,7 @@ const ContextApi = ({ children }) => {
         setTitle,
         deleteNote,
         pinNote,
+        pinnedNotes,
       }}
     >
       {children}

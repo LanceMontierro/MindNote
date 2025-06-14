@@ -33,6 +33,10 @@ export const createNote = async (req, res) => {
 export const getNote = async (req, res) => {
   const uid = req.query.uid;
 
+  if (!uid) {
+    return res.status(400).json({ message: "User ID is required" });
+  }
+
   try {
     const user = await userSchema.findOne({ userId: uid });
 
@@ -73,17 +77,21 @@ export const updateNote = async (req, res) => {
       return res.status(404).json({ message: "Note not found" });
     }
 
-    // const noteId = String(id);
-    // const existingTitle = user.notes.find(
-    //   (n) => n.title === title && n._id !== noteId
-    // );
+    if (title) {
+      const existingNoteTitle = user.notes.find(
+        (n) =>
+          n._id.toString() !== id &&
+          n.title.trim().toLowerCase() === title.trim().toLowerCase()
+      );
 
-    // if (existingTitle) {
-    //   return res
-    //     .status(400)
-    //     .json({ message: "Note with the same title already exists" });
-    // }
-    if (title) note.title = title;
+      if (existingNoteTitle) {
+        return res
+          .status(400)
+          .json({ message: "Note with this title already exists" });
+      }
+      note.title = title;
+    }
+
     if (content) note.content = content;
     await user.save();
 

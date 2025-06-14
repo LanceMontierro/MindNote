@@ -7,7 +7,7 @@ import { FaTrashCan, FaBook } from "react-icons/fa6";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppContext } from "./../../context/appContext";
-
+import { RiUnpinFill } from "react-icons/ri";
 const Home = () => {
   const [showModal, setShowModal] = useState(false);
 
@@ -84,7 +84,7 @@ const Home = () => {
               <div className="bg-[#262626] py-4 pl-6 pr-1 rounded-lg flexBetween w-full">
                 <div className="flex items-center gap-6 w-full">
                   <button>
-                    {note.isPinned ? <TbPinnedFilled /> : <FaBook />}
+                    {note.pinned ? <TbPinnedFilled /> : <FaBook />}
                   </button>
                   <div className="flex flex-col gap-1 w-full justify-center">
                     <p>{note.title}</p>
@@ -118,16 +118,21 @@ const Home = () => {
                     onClick={(e) => {
                       e.stopPropagation();
                       e.preventDefault();
-                      pinNote(
-                        note._id,
-                        note.title,
-                        note.content,
-                        note.createdAt
-                      );
+                      pinNote(note);
+                      setShowOptions(false);
                     }}
                   >
-                    <TbPinnedFilled />
-                    <p>Pin Note</p>
+                    {note.pinned ? (
+                      <>
+                        <RiUnpinFill size={20} />
+                        <p>Unpin Note</p>
+                      </>
+                    ) : (
+                      <>
+                        <TbPinnedFilled size={20} />
+                        <p>Pin Note</p>
+                      </>
+                    )}
                   </button>
                   <button
                     className="flex items-center gap-2 w-full text-left px-4 py-3 hover:bg-gray-200 rounded-lg"
