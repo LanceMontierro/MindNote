@@ -16,14 +16,14 @@ const Settings = () => {
   return (
     <>
       <Header />
-      <div className="flex justify-between max-w-7xl mx-auto px-4 gap-14">
+      <div className="flex justify-between px-4 mx-auto max-w-7xl gap-14">
         <Sidebar />
-        <section className="flex-1 flex flex-col text-light py-2 mt-4 border border-cardDark px-4 rounded-2xl">
+        <section className="flex flex-col flex-1 px-4 py-2 mt-4 border text-light border-cardDark rounded-2xl">
           <span className="text-[22px] font-bold mt-4">General</span>
 
-          <button className="flex flex-col flex-wrap gap-3 mt-4 relative">
+          <button className="relative flex flex-col flex-wrap gap-3 mt-4">
             <div className="cardSettings flexBetween" onClick={handleLogout}>
-              <div className="flex items-center gap-4 w-full">
+              <div className="flex items-center w-full gap-4">
                 <div className="w-10 h-10 rounded-full flexCenter bg-cardDark">
                   <IoIosLogOut className="w-6 h-6 " />
                 </div>
@@ -37,12 +37,12 @@ const Settings = () => {
             </div>
 
             <div className="cardSettings flexBetween">
-              <div className="flex items-center gap-4 w-full">
+              <div className="flex items-center w-full gap-4">
                 <div className="w-10 h-10 rounded-full flexCenter bg-cardDark">
                   <FaTrash className="w-6 h-6 " color="red" />
                 </div>
                 <div className="flex flex-col items-baseline ">
-                  <p className="text-red-500">Delete Account</p>
+                  <p className="text-red-600">Delete Account</p>
                 </div>
               </div>
             </div>

@@ -23,15 +23,15 @@ const Hero = () => {
         backgroundRepeat: "no-repeat",
       }}
     >
-      <div className="text-center items-center">
+      <div className="items-center text-center">
         <h1 className="txtGradient max-[768px]:text-textXl max-[520px]:text-textLg">
           Capture Ideas.
         </h1>
-        <h2 className="text-gray-200 max-[520px]:text-textMd">
+        <h2 className="text-light max-[520px]:text-textMd">
           Ignite Creativity.
         </h2>
 
-        <h4 className="text-sky-400 my-2 font-medium">
+        <h4 className="my-2 font-medium text-secondary">
           <Typewriter
             words={["Write Freely.", "Think Clearly.", "Create Seamlessly."]}
             loop={0}
@@ -42,7 +42,7 @@ const Hero = () => {
             delaySpeed={1000}
           />
         </h4>
-        <button className="bg-gradient-to-r from-blue-500 to-purple-500 py-3 px-4 rounded-md text-white text-textXsm cursor-pointer font-medium hover:opacity-75 duration-300 mt-4">
+        <button className="px-4 py-3 mt-4 font-medium text-white duration-300 rounded-md cursor-pointer bg-gradient-to-r from-blue-500 to-purple-500 text-textXsm hover:opacity-75">
           <div className="flex items-center">
             <span>Get Started</span>
             <FaArrowRightLong className="ml-2 " />

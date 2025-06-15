@@ -3,8 +3,8 @@ import { SignInButton, SignUpButton } from "@clerk/clerk-react";
 const Navbar = () => {
   return (
     <>
-      <div className="w-full border-b border-gray-700 ">
-        <nav className="flexBetween max-w-7xl mx-auto py-2 px-4">
+      <div className="w-full ">
+        <nav className="px-4 py-2 mx-auto flexBetween max-w-7xl">
           <div className="flex items-center">
             <img src={Logo} alt="MindNote Logo" className="w-14 h-14 " />
             <span className="txtGradient font-AudioWide font-bold text-[20px] max-[468px]:text-textSm">
@@ -13,12 +13,12 @@ const Navbar = () => {
           </div>
           <div className="flex items-center gap-3">
             <SignInButton>
-              <button className="py-2 px-3 rounded-md text-white text-textXs cursor-pointer font-medium hover:opacity-75 duration-300   ">
+              <button className="px-3 py-2 font-medium duration-300 border rounded-md cursor-pointer border-cardDark text-light text-textXs hover:opacity-75 ">
                 Sign in
               </button>
             </SignInButton>
             <SignUpButton>
-              <button className="py-2 px-3 rounded-md text-white text-textXs cursor-pointer font-medium hover:opacity-75 duration-300  ">
+              <button className="px-3 py-2 font-medium duration-300 border rounded-md cursor-pointer border-cardDark text-light text-textXs hover:opacity-75 ">
                 Sign up
               </button>
             </SignUpButton>

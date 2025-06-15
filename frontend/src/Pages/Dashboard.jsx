@@ -36,7 +36,7 @@ const Dashboard = () => {
   return (
     <>
       <Header />
-      <div className="flex justify-between max-w-7xl mx-auto px-4 gap-14">
+      <div className="flex justify-between px-4 mx-auto max-w-7xl gap-14">
         <Sidebar />
         <Home />
       </div>

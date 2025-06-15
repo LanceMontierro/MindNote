@@ -11,7 +11,7 @@ const Sidebar = () => {
     navigate(`/${name.toLowerCase()}`);
   };
   return (
-    <aside className="dark:text-light text-black py-2 mt-4 w-46 md:block hidden ">
+    <aside className="hidden py-2 mt-4 text-light w-46 md:block">
       <div className="flex flex-col gap-4">
         {navs.map((nav, i) => {
           const Icon = nav.icon;
@@ -32,13 +32,13 @@ const Sidebar = () => {
         })}
       </div>
 
-      <div className="border border-cardDark py-3 px-2 gap-2 rounded-2xl mt-6 text-light">
-        <h4 className="text-center font-bold txtGradient">Follow me on</h4>
+      <div className="gap-2 px-2 py-3 mt-6 border border-cardDark rounded-2xl text-light">
+        <h4 className="font-bold text-center txtGradient">Follow me on</h4>
         <div className="flex flex-col items-center">
           <a
             href="https://github.com/LanceMontierro"
             target="_blank"
-            className="flex items-center py-3 px-2 gap-2 rounded-2xl"
+            className="flex items-center gap-2 px-2 py-3 rounded-2xl"
           >
             <FaGithub className="text-textSm" />
             <p>Github</p>
@@ -47,7 +47,7 @@ const Sidebar = () => {
           <a
             href="https://www.instagram.com/lncemntierro/"
             target="_blank"
-            className="flex items-center py-3 px-2 gap-2 rounded-2xl"
+            className="flex items-center gap-2 px-2 py-3 rounded-2xl"
           >
             <FaInstagram className="text-textSm" />
             <p>Instagram</p>
