@@ -12,14 +12,10 @@ const ContextApi = ({ children }) => {
   const { user, isSignedIn } = useUser();
   const [userAccount, setUserAccount] = useState("");
   const [notes, setNotes] = useState([]);
-  const [archivedNotes, setArchivedNotes] = useState([]);
   const [titleState, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [active, setActive] = useState("Home");
-  const pinnedNotes = useMemo(
-    () => notes.filter((note) => note.pinned),
-    [notes]
-  );
+  const [showPinnedOnly, setShowPinnedOnly] = useState(false);
 
   const API_URL = import.meta.env.VITE_API_URL;
 
@@ -134,6 +130,11 @@ const ContextApi = ({ children }) => {
 
   const pinNote = async (note) => {
     try {
+      if (!userAccount) {
+        console.error("Please sign in to pin a note.");
+        return;
+      }
+
       const response = await axios.post(`${API_URL}/notes/pin-note`, {
         id: note._id,
         userId: userAccount.id,
@@ -148,6 +149,30 @@ const ContextApi = ({ children }) => {
       );
     } catch (error) {
       console.error("Failed to pin note", error);
+    }
+  };
+
+  const archivedNote = async (note) => {
+    try {
+      if (!userAccount) {
+        console.error("Please sign in to archive a note.");
+        return;
+      }
+
+      const response = await axios.post(`${API_URL}/notes/archive-note`, {
+        id: note._id,
+        userId: userAccount.id,
+      });
+
+      console.log(response.data);
+
+      setNotes((prevNotes) =>
+        prevNotes.map((n) =>
+          n._id === note._id ? { ...n, archived: !n.archived } : n
+        )
+      );
+    } catch (error) {
+      console.error("Failed to archive note", error);
     }
   };
 
@@ -170,7 +195,10 @@ const ContextApi = ({ children }) => {
         setTitle,
         deleteNote,
         pinNote,
-        pinnedNotes,
+        fetchNotes,
+        showPinnedOnly,
+        setShowPinnedOnly,
+        archivedNote,
       }}
     >
       {children}

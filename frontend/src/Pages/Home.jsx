@@ -4,11 +4,12 @@ import { IoIosNotifications } from "react-icons/io";
 import { RiInboxArchiveLine } from "react-icons/ri";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaTrashCan, FaBook } from "react-icons/fa6";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAppContext } from "./../../context/appContext";
 import { RiUnpinFill } from "react-icons/ri";
 import Pagination from "@mui/material/Pagination";
+
 const Home = () => {
   const [showModal, setShowModal] = useState(false);
 
@@ -21,22 +22,45 @@ const Home = () => {
     setDescription,
     deleteNote,
     pinNote,
+    showPinnedOnly,
+    setShowPinnedOnly,
+    archivedNote,
   } = useAppContext();
   const [showOptions, setShowOptions] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
 
+  const handlePinnedNotes = () => setShowPinnedOnly(true);
+  const handleAllNotes = () => setShowPinnedOnly(false);
+
+  const displayedNotes = useMemo(() => {
+    const unArchivedNotes = notes.filter((note) => !note.archived);
+
+    return showPinnedOnly
+      ? unArchivedNotes.filter((note) => note.pinned)
+      : unArchivedNotes;
+  }, [notes, showPinnedOnly]);
+
   const totalNotesPerPage = 5;
-  const totalPage = Math.ceil(notes.length / totalNotesPerPage);
+  const totalPage = Math.ceil(displayedNotes.length / totalNotesPerPage);
 
   const currentNotes = useMemo(() => {
     const startIndex = (currentPage - 1) * totalNotesPerPage;
+    const endIndex = startIndex + totalNotesPerPage;
 
-    return notes.slice(startIndex, startIndex + totalNotesPerPage);
-  }, [currentPage, notes]);
+    return displayedNotes.slice(startIndex, endIndex);
+  }, [currentPage, displayedNotes]);
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
   };
+  useEffect(() => {
+    if (currentPage > 1 && currentNotes.length === 0) {
+      setCurrentPage(currentPage - 1);
+    }
+    console.log("this runs");
+  }, [currentNotes, currentPage]);
+
+  console.log(currentNotes);
 
   const toggleOptions = (noteId) => {
     setShowOptions((prev) => ({
@@ -54,7 +78,9 @@ const Home = () => {
 
   return (
     <section className="flex flex-col flex-1 px-4 py-2 pb-32 mt-4 border text-light border-cardDark rounded-2xl">
-      <span className="text-[22px] font-bold mt-4">Create New Note</span>
+      <span className="text-textMd font-bold mt-4 max-[821px]:text-center max-[500px]:text-[22px]">
+        Welcome to MindNote.
+      </span>
 
       <div className="grid grid-cols-4 gap-4 mt-4 cursor-pointer max-[821px]:grid-cols-2">
         <div className="card" onClick={() => setShowModal(true)}>
@@ -64,32 +90,32 @@ const Home = () => {
           <span className="text-[16px]">Create</span>
         </div>
 
-        <div className="card">
+        <div className="card" onClick={handleAllNotes}>
           <div className="w-10 h-10 rounded-full flexCenter bg-secondary">
             <IoIosNotifications className="w-6 h-6 " />
           </div>
-          <span className="text-[16px]">Reminders</span>
+          <span className="text-[16px]">All Notes</span>
         </div>
 
-        <div className="card">
+        <div className="card" onClick={handlePinnedNotes}>
           <div className="w-10 h-10 rounded-full flexCenter bg-secondary">
             <TbPinnedFilled className="w-6 h-6 " />
           </div>
           <span className="text-[16px]">Pinned Notes</span>
         </div>
 
-        <div className="card">
+        <Link to="/archived" className="card">
           <div className="w-10 h-10 rounded-full flexCenter bg-secondary">
             <RiInboxArchiveLine className="w-6 h-6 " />
           </div>
           <span className="text-[16px]">Archives</span>
-        </div>
+        </Link>
       </div>
 
       <span className="text-[22px] font-bold md:mt-4 mt-6">My Notes</span>
 
       <div className="relative flex flex-col flex-wrap gap-3 mt-2">
-        {notes && notes.length > 0 ? (
+        {currentNotes && currentNotes.length > 0 ? (
           currentNotes.map((note) => (
             <Link
               to={`/note/${note._id}`}
@@ -123,9 +149,26 @@ const Home = () => {
 
               {showOptions[note._id] && (
                 <div className="absolute right-0 bottom-[-120px] bg-cardDark rounded-lg shadow-lg  z-200">
-                  <button className="flex items-center w-full gap-2 px-4 py-4 text-left rounded-lg hover:bg-gray-200">
-                    <RiInboxArchiveLine size={20} />
-                    <p>Add to Archived</p>
+                  <button
+                    className="flex items-center w-full gap-2 px-4 py-4 text-left rounded-lg hover:bg-gray-200"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      archivedNote(note);
+                      setShowOptions(false);
+                    }}
+                  >
+                    {note.archived ? (
+                      <>
+                        <RiInboxArchiveLine size={20} />
+                        <p>Unarchived Note</p>
+                      </>
+                    ) : (
+                      <>
+                        <RiInboxArchiveLine size={20} />
+                        <p>Archived Note</p>
+                      </>
+                    )}
                   </button>
 
                   <button
@@ -165,9 +208,9 @@ const Home = () => {
             </Link>
           ))
         ) : (
-          <p>No notes available</p>
+          <p className="mt-4 text-gray-500">No notes found.</p>
         )}
-        {totalPage > 1 && (
+        {totalPage > 0 && (
           <div className="flex justify-center mt-4">
             <Pagination
               color="primary"

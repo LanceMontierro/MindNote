@@ -1,15 +1,23 @@
 import { useAppContext } from "../../context/appContext";
 import { navs } from "../../const";
 import { FaGithub, FaInstagram } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 const Sidebar = () => {
   const { setActive, active } = useAppContext();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleActive = (name) => {
     setActive(name);
     navigate(`/${name.toLowerCase()}`);
   };
+
+  useEffect(() => {
+    if (location.pathname === "/archived") {
+      setActive(null);
+    }
+  }, [location.pathname, setActive]);
   return (
     <aside className="hidden py-2 mt-4 text-light w-46 md:block">
       <div className="flex flex-col gap-4">
@@ -32,8 +40,10 @@ const Sidebar = () => {
         })}
       </div>
 
-      <div className="gap-2 px-2 py-3 mt-6 border border-cardDark rounded-2xl text-light">
-        <h4 className="font-bold text-center txtGradient">Follow me on</h4>
+      <div className="gap-2 px-2 py-3 mt-6  bg-cardDark rounded-2xl text-light">
+        <h4 className="font-bold text-center txtGradient font-AudioWide">
+          Follow me on
+        </h4>
         <div className="flex flex-col items-center">
           <a
             href="https://github.com/LanceMontierro"

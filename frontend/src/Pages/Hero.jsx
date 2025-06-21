@@ -4,16 +4,41 @@ import { HomeBg } from "../assets";
 import { useAppContext } from "../../context/appContext";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import axios from "axios";
 const Hero = () => {
-  const { isSignedIn } = useAppContext();
-
+  const { user } = useAppContext();
   const navigate = useNavigate();
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
-    if (isSignedIn) {
-      navigate("/home");
-    }
-  }, [isSignedIn, navigate]);
+    const saveUser = async () => {
+      try {
+        if (user) {
+          const userEmail = user.emailAddresses[0].emailAddress;
+          const userName = user.fullName;
+          const userId = user.id;
+
+          const response = await axios.post(`${API_URL}/users/save-user`, {
+            email: userEmail,
+            userName: userName,
+            userId: userId,
+          });
+          if (response.status === 200) {
+            console.log(response.data.message + res.data.newUser.userName);
+          } else if (response.status === 201) {
+            console.log(
+              response.data.message + response.data.existingUser.userName
+            );
+          }
+          navigate("/home");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    saveUser();
+  }, [user, navigate]);
 
   return (
     <section
