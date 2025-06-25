@@ -13,14 +13,16 @@ export const createNote = async (req, res) => {
     const existingNote = user.notes.find((note) => note.title === title);
 
     if (existingNote) {
-      return res.status(404).json({ message: "Note already exists" });
+      return res.status(409).json({ message: "Note already exists" });
     } else {
       const newNote = { title, content };
       user.notes.push(newNote);
       await user.save();
-      return res
-        .status(200)
-        .json({ message: "Note created successfully", note: newNote });
+      return res.status(200).json({
+        success: true,
+        message: "Note created successfully",
+        data: newNote,
+      });
     }
   } catch (error) {
     console.error("Error creating note:", error);
@@ -95,7 +97,11 @@ export const updateNote = async (req, res) => {
     if (content) note.content = content;
     await user.save();
 
-    res.status(200).json({ message: "Note updated successfully", note });
+    res.status(200).json({
+      success: true,
+      message: "Note updated successfully",
+      data: note,
+    });
   } catch (error) {
     console.error("Error updating note", error);
     res

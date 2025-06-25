@@ -5,6 +5,7 @@ import { useAppContext } from "../../context/appContext";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
+import { notifySuccess } from "../../toastUtils/toast";
 const Hero = () => {
   const { user } = useAppContext();
   const navigate = useNavigate();
@@ -25,10 +26,12 @@ const Hero = () => {
             userId: userId,
           });
           if (response.status === 200) {
-            console.log(response.data.message + res.data.newUser.userName);
+            notifySuccess(
+              `${response.data.message}  ${response.data.newUser.userName}`
+            );
           } else if (response.status === 201) {
-            console.log(
-              response.data.message + response.data.existingUser.userName
+            notifySuccess(
+              `${response.data.message}  ${response.data.existingUser.userName}`
             );
           }
           navigate("/home");

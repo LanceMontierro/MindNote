@@ -1,7 +1,7 @@
 import { useState, useContext, createContext, useEffect, useMemo } from "react";
 import { useUser } from "@clerk/clerk-react";
 import axios from "axios";
-
+import { notifySuccess, notifyError } from "../toastUtils/toast";
 const AppContext = createContext();
 
 export function useAppContext() {
@@ -72,8 +72,12 @@ const ContextApi = ({ children }) => {
 
       if (response.data && response.data.note) {
         fetchNotes();
+        notifySuccess(response.data.message);
+      } else {
+        notifyError(response.data.message);
       }
     } catch (error) {
+      notifyError(error.response?.data?.message || "Failed to create note");
       console.error("Error creating note:", error);
     }
   };
@@ -91,11 +95,13 @@ const ContextApi = ({ children }) => {
         userId: userAccount.id,
         id: id,
       });
-      console.log("✅ updateNote response:", response.data);
 
       if (response.status === 200) {
         await fetchNotes();
+        notifySuccess(response.data.message);
         return { success: true };
+      } else {
+        notifyError(response.data.message || "Failed to update note");
       }
     } catch (error) {
       if (
@@ -103,6 +109,7 @@ const ContextApi = ({ children }) => {
         error.response.data &&
         error.response.data.message
       ) {
+        notifyError(error.response?.data?.message || "Failed to update note");
         return { error: error.response.data.message };
       }
       return { error: "Failed to update note." };
@@ -122,6 +129,9 @@ const ContextApi = ({ children }) => {
 
       if (response.status === 200) {
         setNotes((prevNotes) => prevNotes.filter((note) => note._id !== id));
+        notifySuccess(response.data.message);
+      } else {
+        notifyError(response.data.message || "Failed to delete note");
       }
     } catch (error) {
       console.error("Error deleting note:", error);
@@ -139,8 +149,6 @@ const ContextApi = ({ children }) => {
         id: note._id,
         userId: userAccount.id,
       });
-
-      console.log(response.data);
 
       setNotes((prevNotes) =>
         prevNotes.map((n) =>
@@ -163,8 +171,6 @@ const ContextApi = ({ children }) => {
         id: note._id,
         userId: userAccount.id,
       });
-
-      console.log(response.data);
 
       setNotes((prevNotes) =>
         prevNotes.map((n) =>

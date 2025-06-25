@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/clerk-react";
 import ContextApi from "../context/appContext.jsx";
 import { router } from "../routes/route.jsx";
 import { RouterProvider } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 if (!PUBLISHABLE_KEY) {
@@ -16,6 +17,7 @@ createRoot(document.getElementById("root")).render(
     <ContextApi>
       <StrictMode>
         <RouterProvider router={router} />
+        <ToastContainer />
       </StrictMode>
     </ContextApi>
   </ClerkProvider>

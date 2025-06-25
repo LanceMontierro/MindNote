@@ -164,8 +164,6 @@ const Note = () => {
                     if (result?.success) {
                       setShowEditModal(false);
                     } else if (result?.error) {
-                      alert(result.error);
-
                       if (note) {
                         setTitleState(note.title);
                         setContent(note.content);

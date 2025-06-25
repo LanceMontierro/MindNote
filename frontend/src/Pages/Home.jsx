@@ -33,7 +33,9 @@ const Home = () => {
   const handleAllNotes = () => setShowPinnedOnly(false);
 
   const displayedNotes = useMemo(() => {
-    const unArchivedNotes = notes.filter((note) => !note.archived);
+    const unArchivedNotes = notes
+      .filter((note) => !note.archived)
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 
     return showPinnedOnly
       ? unArchivedNotes.filter((note) => note.pinned)
