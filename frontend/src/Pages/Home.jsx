@@ -1,13 +1,13 @@
 import { IoCreateOutline } from "react-icons/io5";
 import { TbPinnedFilled } from "react-icons/tb";
 import { IoIosNotifications } from "react-icons/io";
-import { RiInboxArchiveLine } from "react-icons/ri";
+import { RiInboxArchiveLine, RiUnpinFill } from "react-icons/ri";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaTrashCan, FaBook } from "react-icons/fa6";
 import { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAppContext } from "./../../context/appContext";
-import { RiUnpinFill } from "react-icons/ri";
+
 import Pagination from "@mui/material/Pagination";
 
 const Home = () => {
@@ -234,7 +234,7 @@ const Home = () => {
             </h2>
             <input
               type="text"
-              placeholder="Title"
+              placeholder="Please Enter at least title"
               className="w-full p-2 mb-4 border border-gray-300 rounded text-light"
               onChange={(e) => setTitle(e.target.value)}
               required
@@ -244,12 +244,16 @@ const Home = () => {
               placeholder="Content"
               className="w-full p-2 mb-4 border border-gray-300 rounded text-light"
               onChange={(e) => setDescription(e.target.value)}
-              required
               value={description}
             ></textarea>
             <button
+              disabled={!titleState}
               onClick={handleSubmit}
-              className="px-4 py-2 text-white bg-blue-500 rounded cursor-pointer"
+              className={`px-4 py-2 text-white rounded bg-blue-500 ${
+                titleState.length < 1
+                  ? "opacity-60 cursor-not-allowed"
+                  : "cursor-pointer  "
+              }`}
             >
               Create Note
             </button>

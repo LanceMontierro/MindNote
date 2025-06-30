@@ -70,15 +70,13 @@ const ContextApi = ({ children }) => {
         userId: userAccount.id,
       });
 
-      if (response.data && response.data.note) {
-        fetchNotes();
+      if (response.status === 200) {
+        await fetchNotes();
         notifySuccess(response.data.message);
-      } else {
-        notifyError(response.data.message);
       }
     } catch (error) {
-      notifyError(error.response?.data?.message || "Failed to create note");
-      console.error("Error creating note:", error);
+      notifyError(`${error.response.data.message} `);
+      console.error("Error creating note", error);
     }
   };
 

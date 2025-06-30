@@ -23,7 +23,6 @@ export const pinNote = async (req, res) => {
       note: user.notes[noteIndex],
     });
   } catch (error) {
-    console.error("Error pinning note:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: error.message });
   }
 };

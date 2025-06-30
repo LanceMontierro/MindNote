@@ -5,13 +5,14 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { RiInboxArchiveLine } from "react-icons/ri";
+import { RiInboxArchiveLine, RiUnpinFill } from "react-icons/ri";
 import { TbPinnedFilled } from "react-icons/tb";
 import { FaEdit } from "react-icons/fa";
 import { FaTrashCan } from "react-icons/fa6";
 
 const Note = () => {
-  const { notes, updateNote, deleteNote } = useAppContext();
+  const { notes, updateNote, deleteNote, pinNote, archivedNote } =
+    useAppContext();
   const { id } = useParams();
   const [title, setTitleState] = useState("");
   const [content, setContent] = useState("");
@@ -74,13 +75,34 @@ const Note = () => {
                   <FaEdit size={20} />
                   <p>Edit Note</p>
                 </button>
-                <button className="flex items-center w-full gap-2 px-4 py-4 text-left hover:bg-gray-200 ">
+                <button
+                  className="flex items-center w-full gap-2 px-4 py-4 text-left hover:bg-gray-200"
+                  onClick={() => {
+                    archivedNote(note);
+                    navigate("/home");
+                  }}
+                >
                   <RiInboxArchiveLine size={20} />
                   <p>Add to Archived</p>
                 </button>
-                <button className="flex items-center w-full gap-2 px-4 py-4 text-left hover:bg-gray-200 ">
-                  <TbPinnedFilled size={20} />
-                  <p>Pin Note</p>
+                <button
+                  className="flex items-center w-full gap-2 px-4 py-4 text-left hover:bg-gray-200"
+                  onClick={() => {
+                    pinNote(note);
+                    setShowOptions(false);
+                  }}
+                >
+                  {note.pinned ? (
+                    <>
+                      <RiUnpinFill size={20} />
+                      <p>Unpin Note</p>
+                    </>
+                  ) : (
+                    <>
+                      <TbPinnedFilled size={20} />
+                      <p>Pin Note</p>
+                    </>
+                  )}
                 </button>
                 <button
                   className="flex items-center w-full gap-2 px-4 py-3 text-left rounded-lg hover:bg-gray-200"

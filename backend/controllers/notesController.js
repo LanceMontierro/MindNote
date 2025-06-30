@@ -10,6 +10,10 @@ export const createNote = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    if (!title || title.trim() === "") {
+      return res.status(400).json({ message: "Title is required" });
+    }
+
     const existingNote = user.notes.find((note) => note.title === title);
 
     if (existingNote) {
@@ -25,10 +29,7 @@ export const createNote = async (req, res) => {
       });
     }
   } catch (error) {
-    console.error("Error creating note:", error);
-    res
-      .status(500)
-      .json({ message: "Internal server error", error: error.message });
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -52,10 +53,7 @@ export const getNote = async (req, res) => {
 
     res.status(200).json(user.notes);
   } catch (error) {
-    console.error("Error getting notes:", error);
-    res
-      .status(500)
-      .json({ message: "Internal server error", error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -103,10 +101,7 @@ export const updateNote = async (req, res) => {
       data: note,
     });
   } catch (error) {
-    console.error("Error updating note", error);
-    res
-      .status(500)
-      .json({ message: "Internal server error", error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -133,9 +128,6 @@ export const deleteNote = async (req, res) => {
 
     return res.status(200).json({ message: "Note deleted successfully" });
   } catch (error) {
-    console.error("Error deleting note", error);
-    res
-      .status(500)
-      .json({ message: "Internal server error", error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
