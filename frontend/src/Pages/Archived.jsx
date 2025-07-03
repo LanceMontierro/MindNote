@@ -25,68 +25,72 @@ const Archived = () => {
           <h2 className="text-textMd font-bold mt-4 max-[821px]:text-center max-[500px]:text-[22px]">
             Archived Notes
           </h2>
-          <div className="relative flex flex-col flex-wrap gap-3 mt-2"></div>
-          {archivedNotes && archivedNotes.length > 0 ? (
-            archivedNotes.map((note) => (
-              <div key={note._id && note._id} className="relative">
-                <div className="w-full py-4 pl-6 pr-1 rounded-lg bg-cardDark flexBetween">
-                  <div className="flex items-center w-full gap-6">
-                    <button>
-                      <RiInboxArchiveLine size={20} />
+          <div className="relative flex flex-col flex-wrap gap-3 mt-2">
+            {archivedNotes && archivedNotes.length > 0 ? (
+              archivedNotes.map((note) => (
+                <div key={note._id && note._id} className="relative">
+                  <div className="w-full py-4 pl-6 pr-1 rounded-lg bg-cardDark flexBetween">
+                    <div className="flex items-center w-full gap-6">
+                      <button>
+                        <RiInboxArchiveLine size={20} />
+                      </button>
+
+                      <div className="flex flex-col justify-center w-full gap-1">
+                        <p>{note.title}</p>
+                        <p className="text-gray-500 text-[12px]">
+                          {note.createdAt && note.createdAt.split("T")[0]}
+                        </p>
+                      </div>
+                    </div>
+
+                    <button
+                      className="mr-5 cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        handleShopwOptions(note._id);
+                      }}
+                    >
+                      <BsThreeDotsVertical
+                        size={20}
+                        className="text-gray-500"
+                      />
                     </button>
 
-                    <div className="flex flex-col justify-center w-full gap-1">
-                      <p>{note.title}</p>
-                      <p className="text-gray-500 text-[12px]">
-                        {note.createdAt && note.createdAt.split("T")[0]}
-                      </p>
-                    </div>
+                    {showOptions[note._id] && (
+                      <div className="absolute right-0 bottom-[-70px] bg-cardDark rounded-lg shadow-lg z-200">
+                        <button
+                          className="flex items-center w-full gap-2 px-4 py-4 text-left rounded-lg hover:bg-gray-200"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            archivedNote(note);
+                          }}
+                        >
+                          <RiInboxArchiveLine size={20} />
+                          <p>Unarchive Note</p>
+                        </button>
+
+                        <button
+                          className="flex items-center w-full gap-2 px-4 py-4 text-left rounded-lg hover:bg-gray-200"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            deleteNote(note._id);
+                          }}
+                        >
+                          <FaTrashCan size={20} />
+                          <p>Delete Note</p>
+                        </button>
+                      </div>
+                    )}
                   </div>
-
-                  <button
-                    className="mr-5 cursor-pointer"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      e.preventDefault();
-                      handleShopwOptions(note._id);
-                    }}
-                  >
-                    <BsThreeDotsVertical size={20} className="text-gray-500" />
-                  </button>
-
-                  {showOptions[note._id] && (
-                    <div className="absolute right-0 bottom-[-70px] bg-cardDark rounded-lg shadow-lg z-200">
-                      <button
-                        className="flex items-center w-full gap-2 px-4 py-4 text-left rounded-lg hover:bg-gray-200"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          e.preventDefault();
-                          archivedNote(note);
-                        }}
-                      >
-                        <RiInboxArchiveLine size={20} />
-                        <p>Unarchive Note</p>
-                      </button>
-
-                      <button
-                        className="flex items-center w-full gap-2 px-4 py-4 text-left rounded-lg hover:bg-gray-200"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          e.preventDefault();
-                          deleteNote(note._id);
-                        }}
-                      >
-                        <FaTrashCan size={20} />
-                        <p>Delete Note</p>
-                      </button>
-                    </div>
-                  )}
                 </div>
-              </div>
-            ))
-          ) : (
-            <p className=" text-gray-500 mt-4">No archived notes found.</p>
-          )}
+              ))
+            ) : (
+              <p className=" text-gray-500 mt-4">No archived notes found.</p>
+            )}
+          </div>
         </div>
       </div>
     </>
