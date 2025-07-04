@@ -67,3 +67,10 @@
     @apply bg-cardDark py-4 pl-6 pr-1 rounded-lg w-full h-[64px] hover:bg-primary duration-200 ease-in-out cursor-pointer;
   }
 }
+
+@media (max-width: 480px) {
+  .Toastify__toast {
+    --toastify-toast-width: 70%;
+    margin: 20px auto 0;
+  }
+}

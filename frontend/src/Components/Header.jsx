@@ -44,8 +44,8 @@ const Header = () => {
         </div>
 
         <div
-          className={`absolute top-0 h-full z-10 flex flex-col items-center gap-3 px-4 py-2 bg-white md:hidden w-full transition-all ease-in-out duration-500 
-               ${openNavbar ? "right-0" : "right-[-100%]"} `}
+          className={`fixed top-0 h-full z-10 flex flex-col items-center gap-3 px-4 py-2 bg-white md:hidden w-full transition-all ease-in-out duration-500 
+               ${openNavbar ? "right-0 " : "right-[-100%]"} `}
         >
           <div className="w-full flex justify-end">
             <div
@@ -109,7 +109,7 @@ const Header = () => {
             <div className="bg-gray-200 rounded-full w-28 h-28" />
           )}
           {user && user.fullName ? (
-            <p className="text-light ">{user.fullName}</p>
+            <p className="text-light ">{user.firstName}</p>
           ) : (
             <p className="text-light ">Guest</p>
           )}

@@ -30,4 +30,6 @@ export const saveUser = async (req, res) => {
   }
 };
 
-export const deleteUserAcc = async (req, res) => {};
+// export const deleteUserAcc = async (req, res) => {
+//   const {id} = req.
+// };

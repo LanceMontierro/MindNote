@@ -25,6 +25,8 @@ const ContextApi = ({ children }) => {
     }
   }, [isSignedIn, user]);
 
+  console.log(userAccount);
+
   const fetchNotes = async () => {
     if (!userAccount) {
       console.error("User account is not set. Cannot fetch notes.");
