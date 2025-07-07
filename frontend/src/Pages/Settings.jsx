@@ -5,7 +5,7 @@ import { useAppContext } from "../../context/appContext";
 import { useAuth } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 const Settings = () => {
-  const { user } = useAppContext();
+  const { user, deleteUserAccount } = useAppContext();
   const { signOut } = useAuth();
   const navigate = useNavigate();
 
@@ -13,6 +13,13 @@ const Settings = () => {
     await signOut();
     navigate("/");
   };
+
+  const handleDeleteAccount = async () => {
+    await deleteUserAccount();
+    await signOut();
+    navigate("/");
+  };
+
   return (
     <>
       <Header />
@@ -41,7 +48,10 @@ const Settings = () => {
                 <div className="w-10 h-10 rounded-full flexCenter bg-cardDark">
                   <FaTrash className="w-6 h-6 " color="red" />
                 </div>
-                <div className="flex flex-col items-baseline ">
+                <div
+                  className="flex flex-col items-baseline "
+                  onClick={handleDeleteAccount}
+                >
                   <p className="text-red-600">Delete Account</p>
                 </div>
               </div>

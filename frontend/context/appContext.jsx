@@ -1,5 +1,5 @@
 import { useState, useContext, createContext, useEffect, useMemo } from "react";
-import { useUser } from "@clerk/clerk-react";
+import { useAuth, useUser } from "@clerk/clerk-react";
 import axios from "axios";
 import { notifySuccess, notifyError } from "../toastUtils/toast";
 const AppContext = createContext();
@@ -16,6 +16,7 @@ const ContextApi = ({ children }) => {
   const [description, setDescription] = useState("");
   const [active, setActive] = useState("Home");
   const [showPinnedOnly, setShowPinnedOnly] = useState(false);
+  const { getToken } = useAuth();
 
   const API_URL = import.meta.env.VITE_API_URL;
 
@@ -26,6 +27,26 @@ const ContextApi = ({ children }) => {
   }, [isSignedIn, user]);
 
   console.log(userAccount);
+
+  const deleteUserAccount = async () => {
+    try {
+      const token = await getToken();
+
+      console.log(token);
+
+      const response = await axios.delete(`${API_URL}/users/delete-user`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 200) {
+        notifySuccess(response.data.message);
+      }
+    } catch (error) {
+      notifyError(error.response?.data?.message || "Failed to delete account");
+    }
+  };
 
   const fetchNotes = async () => {
     if (!userAccount) {
@@ -41,9 +62,7 @@ const ContextApi = ({ children }) => {
       console.log(userAccount.id);
 
       if (response.data) {
-        setNotes(response.data);
-      } else {
-        console.error("Invalid API response:", response.data);
+        setNotes(response.data || []);
       }
     } catch (error) {
       console.error(
@@ -205,6 +224,7 @@ const ContextApi = ({ children }) => {
         showPinnedOnly,
         setShowPinnedOnly,
         archivedNote,
+        deleteUserAccount,
       }}
     >
       {children}

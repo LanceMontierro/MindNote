@@ -44,11 +44,11 @@ export const getNote = async (req, res) => {
     const user = await userSchema.findOne({ userId: uid });
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(200).json([]);
     }
 
     if (user.notes.length === 0) {
-      return res.status(404).json({ message: "No notes found" });
+      return res.status(200).json([]);
     }
 
     res.status(200).json(user.notes);
