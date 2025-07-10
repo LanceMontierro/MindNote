@@ -31,7 +31,7 @@ const Header = () => {
       <div className="px-4 py-2 mx-auto flexBetween max-w-7xl ">
         <div className="flex items-center">
           <img src={Logo} alt="MindNote Logo" className="w-14 h-14 " />
-          <span className="txtGradient font-AudioWide font-bold text-[20px] max-[468px]:text-textSm">
+          <span className="txtGradient font-bold text-[20px] max-[468px]:text-textSm">
             MindNote
           </span>
         </div>
@@ -67,9 +67,7 @@ const Header = () => {
                   }`}
                 >
                   <Icon className="text-[22px]" />
-                  <span className=" text-textSm font-medium font-AudioWide">
-                    {nav.name}
-                  </span>
+                  <span className=" text-textSm font-medium">{nav.name}</span>
                 </button>
               );
             })}
@@ -82,9 +80,7 @@ const Header = () => {
               target="_blank"
             >
               <FaGithub className="text-[22px]" />
-              <span className=" text-textSm font-medium font-AudioWide">
-                Github
-              </span>
+              <span className=" text-textSm font-medium">Github</span>
             </a>
 
             <a
@@ -95,9 +91,7 @@ const Header = () => {
               target="_blank"
             >
               <FaInstagram className="text-[22px]" />
-              <span className=" text-textSm font-medium font-AudioWide">
-                Instagram
-              </span>
+              <span className=" text-textSm font-medium">Instagram</span>
             </a>
           </div>
         </div>

@@ -21,7 +21,11 @@ export const archiveNote = async (req, res) => {
     user.notes[noteIndex].archived = !user.notes[noteIndex].archived;
     await user.save();
 
-    res.status(200).json({ message: "Note archived successfully" });
+    if (user.notes[noteIndex].archived) {
+      return res.status(200).json({ message: "Note archived successfully" });
+    }
+
+    res.status(200).json({ message: "Note Unarchived successfully" });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }

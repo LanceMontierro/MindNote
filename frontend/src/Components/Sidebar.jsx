@@ -32,18 +32,14 @@ const Sidebar = () => {
               }`}
             >
               <Icon className="text-[22px]" />
-              <span className=" text-[16px] font-medium font-AudioWide">
-                {nav.name}
-              </span>
+              <span className=" text-[16px] font-medium">{nav.name}</span>
             </button>
           );
         })}
       </div>
 
       <div className="gap-2 px-2 py-3 mt-6  bg-cardDark rounded-2xl text-light">
-        <h4 className="font-bold text-center txtGradient font-AudioWide">
-          Follow me on
-        </h4>
+        <h4 className="font-bold text-center txtGradient">Follow me on</h4>
         <div className="flex flex-col items-center">
           <a
             href="https://github.com/LanceMontierro"

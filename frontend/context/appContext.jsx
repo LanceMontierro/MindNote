@@ -1,4 +1,4 @@
-import { useState, useContext, createContext, useEffect, useMemo } from "react";
+import { useState, useContext, createContext, useEffect } from "react";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import axios from "axios";
 import { notifySuccess, notifyError } from "../toastUtils/toast";
@@ -196,6 +196,10 @@ const ContextApi = ({ children }) => {
           n._id === note._id ? { ...n, archived: !n.archived } : n
         )
       );
+
+      if (response.status === 200) {
+        notifySuccess(response.data.message);
+      }
     } catch (error) {
       console.error("Failed to archive note", error);
     }

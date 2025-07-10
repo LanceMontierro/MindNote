@@ -80,7 +80,7 @@ const Home = () => {
 
   return (
     <section className="flex flex-col flex-1 px-4 py-2 md:pb-32 pb-8 mt-4 border text-light border-cardDark rounded-2xl">
-      <span className="text-textMd font-bold mt-4 max-[821px]:text-center max-[500px]:text-[22px]">
+      <span className="text-textMd font-semibold mt-4 max-[821px]:text-center max-[500px]:text-[22px]">
         Welcome to MindNote.
       </span>
 
@@ -116,7 +116,7 @@ const Home = () => {
         </Link>
       </div>
 
-      <span className="text-[22px] font-bold md:mt-4 mt-6">My Notes</span>
+      <span className="text-[22px] font-semibold md:mt-4 mt-6">My Notes</span>
 
       <div className="relative flex flex-col flex-wrap gap-3 mt-2">
         {currentNotes && currentNotes.length > 0 ? (
@@ -231,9 +231,7 @@ const Home = () => {
         <>
           <div className="fixed inset-0 bg-black opacity-50"></div>
           <div className="absolute p-4 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg top-1/2 left-1/2 z-100 max-[480px]:w-[80%]  ">
-            <h2 className="mb-4 font-bold text-textSm text-light ">
-              Create New Note
-            </h2>
+            <h2 className="mb-4 text-textSm text-light ">Create New Note</h2>
             <input
               type="text"
               placeholder="Please Enter at least title"

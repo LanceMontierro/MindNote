@@ -22,7 +22,7 @@ const Archived = () => {
       <div className="flex justify-between px-4 mx-auto max-w-7xl gap-14">
         <Sidebar />
         <div className="flex flex-col flex-1 px-4 py-2 pb-32 mt-4 border text-light border-cardDark rounded-2xl">
-          <h2 className="text-textMd font-bold mt-4 max-[821px]:text-center max-[500px]:text-[22px]">
+          <h2 className="text-textMd mt-4 max-[821px]:text-center max-[500px]:text-[22px]">
             Archived Notes
           </h2>
           <div className="relative flex flex-col flex-wrap gap-3 mt-2">

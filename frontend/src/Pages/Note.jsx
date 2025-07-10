@@ -117,7 +117,7 @@ const Note = () => {
 
           <div className="flex flex-col flex-1 py-2 pb-32 text-light">
             <div className="mt-4">
-              <h1 className="text-[24px] font-bold">{title}</h1>
+              <h2 className="text-[24px]">{title}</h2>
               <p className="text-[16px] mt-2">{content}</p>
             </div>
           </div>
