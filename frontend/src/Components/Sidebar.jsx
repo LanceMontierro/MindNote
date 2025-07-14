@@ -39,7 +39,9 @@ const Sidebar = () => {
       </div>
 
       <div className="gap-2 px-2 py-3 mt-6  bg-cardDark rounded-2xl text-light">
-        <h4 className="font-bold text-center txtGradient">Follow me on</h4>
+        <h4 className="font-bold text-center txtGradient font-montserrat">
+          Follow me on
+        </h4>
         <div className="flex flex-col items-center">
           <a
             href="https://github.com/LanceMontierro"

@@ -5,6 +5,7 @@ import { useAppContext } from "../../context/appContext";
 import { useAuth } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { notifySuccess } from "./../../toastUtils/toast";
 const Settings = () => {
   const { user, deleteUserAccount } = useAppContext();
   const { signOut } = useAuth();
@@ -15,6 +16,7 @@ const Settings = () => {
   const handleLogout = async () => {
     await signOut();
     navigate("/");
+    notifySuccess("Sign out successfully");
   };
 
   const handleDeleteAccount = async () => {
@@ -40,10 +42,10 @@ const Settings = () => {
                 <div className="w-10 h-10 rounded-full flexCenter bg-cardDark">
                   <IoIosLogOut className="w-6 h-6 " />
                 </div>
-                <div className="flex flex-col items-baseline ">
+                <div className="flex flex-col items-baseline">
                   <p>Sign Out</p>
                   <span className="text-neutral-500 text-[12px]">
-                    {user.emailAddresses[0].emailAddress}
+                    {user && user.emailAddresses[0].emailAddress}
                   </span>
                 </div>
               </div>

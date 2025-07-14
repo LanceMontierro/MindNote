@@ -6,13 +6,19 @@ import { IoMdClose } from "react-icons/io";
 import { FaGithub, FaInstagram } from "react-icons/fa";
 import { navs } from "../../const";
 import { useNavigate } from "react-router-dom";
+import Menu from "@mui/material/Menu";
 const Header = () => {
   const { user, active, setActive } = useAppContext();
   const [openNavbar, setOpenNavbar] = useState(false);
+  const [openUserDetails, setOpenUserDetails] = useState(false);
   const navigate = useNavigate();
 
   const toggleNavbar = () => {
     setOpenNavbar((prev) => !prev);
+  };
+
+  const toggleUserDetails = () => {
+    setOpenUserDetails((prev) => !prev);
   };
 
   useEffect(() => {
@@ -31,8 +37,8 @@ const Header = () => {
       <div className="px-4 py-2 mx-auto flexBetween max-w-7xl ">
         <div className="flex items-center">
           <img src={Logo} alt="MindNote Logo" className="w-14 h-14 " />
-          <span className="txtGradient font-bold text-[20px] max-[468px]:text-textSm">
-            MindNote
+          <span className="txtGradient font-black text-[20px] max-[468px]:text-textSm font-montserrat">
+            M!ndNote
           </span>
         </div>
 
@@ -96,7 +102,10 @@ const Header = () => {
           </div>
         </div>
 
-        <div className="items-center hidden gap-3 px-4 py-2 rounded-2xl bg-cardDark hover:bg-primary md:flex">
+        <div
+          className="items-center hidden gap-3 px-4 py-2 rounded-2xl bg-cardDark hover:bg-primary md:flex"
+          onClick={toggleUserDetails}
+        >
           {user && user.imageUrl ? (
             <img src={user.imageUrl} alt="" className="w-8 h-8 rounded-full" />
           ) : (
@@ -106,6 +115,37 @@ const Header = () => {
             <p className="text-light ">{user.firstName}</p>
           ) : (
             <p className="text-light ">Guest</p>
+          )}
+          {openUserDetails && (
+            <div className="absolute top-16 right-[3%] bg-white shadow-lg rounded-lg z-[100] ">
+              <div className="p-4">
+                <p className="font-semibold txtGradient">User Details</p>
+                <p className="font-semibold">
+                  Email:{" "}
+                  <span className="font-medium ">
+                    {user.emailAddresses[0].emailAddress}
+                  </span>{" "}
+                </p>
+                <p className="font-semibold">
+                  Full Name:{" "}
+                  <span className="font-medium">{user.fullName}</span>{" "}
+                </p>
+                <p className="font-semibold">
+                  Id: <span className="font-medium">{user.id}</span>
+                </p>
+
+                <p className="font-semibold">
+                  Account Created:{" "}
+                  <span className="font-medium">
+                    {new Date(user.createdAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                    })}
+                  </span>
+                </p>
+              </div>
+            </div>
           )}
         </div>
       </div>

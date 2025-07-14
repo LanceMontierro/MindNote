@@ -1,3 +1,4 @@
-import Logo from "./removebackground1740799053706.png";
-import HomeBg from "./bg-home-fotor-bg-remover-2025030213222.png";
-export { Logo, HomeBg };
+import Logo from "./logo.png";
+import LaptopSize from "./263shots_so-Photoroom.png";
+
+export { Logo, LaptopSize };
