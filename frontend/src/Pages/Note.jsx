@@ -118,7 +118,14 @@ const Note = () => {
           <div className="flex flex-col flex-1 py-2 pb-32 text-light">
             <div className="mt-4">
               <h2 className="text-[24px]">{title}</h2>
-              <p className="text-[16px] mt-2">{content}</p>
+              <p className="text-[16px] mt-2">
+                {content.split("\n").map((line, index) => (
+                  <span key={index}>
+                    {line.replace(/\*/g, " ")}
+                    <br />
+                  </span>
+                ))}
+              </p>
             </div>
           </div>
         </div>

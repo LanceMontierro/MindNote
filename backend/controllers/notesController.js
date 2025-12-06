@@ -17,7 +17,11 @@ export const createNote = async (req, res) => {
     const existingNote = user.notes.find((note) => note.title === title);
 
     if (existingNote) {
-      return res.status(409).json({ message: "Note already exists" });
+      return res
+        .status(409)
+        .json({
+          message: "Note title already exists please choose a different title",
+        });
     } else {
       const newNote = { title, content };
       user.notes.push(newNote);

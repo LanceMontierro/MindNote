@@ -58,6 +58,9 @@
   .flexBetween {
     @apply flex justify-between items-center;
   }
+  .listBg {
+    background: linear-gradient(to right, #20ffff, #0c61cc 30%, #eb0078 150%);
+  }
 }
 
 @layer components {

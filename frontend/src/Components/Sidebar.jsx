@@ -19,7 +19,7 @@ const Sidebar = () => {
     }
   }, [location.pathname, setActive]);
   return (
-    <aside className="hidden py-2 mt-4 text-light w-46 md:block">
+    <aside className="block py-2 mt-4 text-light w-46 max-[769px]:hidden">
       <div className="flex flex-col gap-4">
         {navs.map((nav, i) => {
           const Icon = nav.icon;

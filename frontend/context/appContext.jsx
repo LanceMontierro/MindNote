@@ -16,7 +16,13 @@ const ContextApi = ({ children }) => {
   const [description, setDescription] = useState("");
   const [active, setActive] = useState("Home");
   const [showPinnedOnly, setShowPinnedOnly] = useState(false);
+  const [activeFeature, setActiveFeature] = useState("All Notes");
+  const [prompt, setPrompt] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
   const { getToken } = useAuth();
+
+  console.log(messages);
 
   const API_URL = import.meta.env.VITE_API_URL;
 
@@ -205,6 +211,114 @@ const ContextApi = ({ children }) => {
     }
   };
 
+  const generateNote = async (userPrompt) => {
+    try {
+      setLoading(true);
+      if (!userAccount) return;
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "user",
+          title: userPrompt,
+          timeStamp: new Date().toISOString(),
+        },
+      ]);
+
+      const response = await axios.post(`${API_URL}/ai/generate-note`, {
+        prompt: userPrompt,
+        userId: userAccount.id,
+      });
+
+      if (response.status === 200) {
+        const aiContent = response.data.data.content;
+        const title = response.data.data.title;
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "AI",
+            content: aiContent,
+            title,
+            timeStamp: new Date().toISOString(),
+          },
+        ]);
+      }
+    } catch (error) {
+      console.error("Error generating note:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const saveGeneratedNote = async (title, content) => {
+    try {
+      if (!userAccount) {
+        console.error("Please sign in to save a generated note.");
+      }
+
+      const response = await axios.post(`${API_URL}/ai/save-generated-note`, {
+        title,
+        content,
+        userId: userAccount.id,
+      });
+
+      if (response.status === 200) {
+        await fetchNotes();
+        notifySuccess(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error saving generated note:", error);
+      notifyError(error.response?.data?.message);
+    }
+  };
+
+  const generateNoteFromAudio = async (audioBlob) => {
+    try {
+      setLoading(true);
+      if (!userAccount) return;
+      const formData = new FormData();
+      formData.append("audio", audioBlob);
+      formData.append("userId", userAccount.id);
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "user",
+          title: "Audio Note",
+          timeStamp: new Date().toISOString(),
+        },
+      ]);
+
+      const response = await axios.post(
+        `${API_URL}/ai/audio-prompt`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      if (response.status === 200) {
+        const aiContent = response.data.data.content;
+        const title = response.data.data.title;
+
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "AI",
+            content: aiContent,
+            title,
+            timeStamp: new Date().toISOString(),
+          },
+        ]);
+      }
+    } catch (error) {
+      console.error("Error generating note from audio:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -229,6 +343,17 @@ const ContextApi = ({ children }) => {
         setShowPinnedOnly,
         archivedNote,
         deleteUserAccount,
+        activeFeature,
+        setActiveFeature,
+        prompt,
+        setPrompt,
+        generateNote,
+        generateNoteFromAudio,
+        saveGeneratedNote,
+        loading,
+        setLoading,
+        messages,
+        setMessages,
       }}
     >
       {children}

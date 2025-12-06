@@ -13,12 +13,12 @@ const Navbar = () => {
           </div>
           <div className="flex items-center gap-3">
             <SignInButton>
-              <button className="px-3 py-2 font-medium duration-300 border rounded-md cursor-pointer border-cardDark text-light text-textXs hover:opacity-75 ">
+              <button className="px-3 py-2 font-medium duration-300  rounded-md cursor-pointer   text-textXs hover:opacity-75 ">
                 Sign in
               </button>
             </SignInButton>
             <SignUpButton>
-              <button className="px-3 py-2 font-medium duration-300 border rounded-md cursor-pointer border-cardDark text-light text-textXs hover:opacity-75 ">
+              <button className="px-3 py-2 font-medium duration-300  rounded-md cursor-pointer   text-textXs hover:opacity-75 ">
                 Sign up
               </button>
             </SignUpButton>

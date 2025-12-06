@@ -25,6 +25,8 @@ const Home = () => {
     showPinnedOnly,
     setShowPinnedOnly,
     archivedNote,
+    setActiveFeature,
+    activeFeature,
   } = useAppContext();
   const [showOptions, setShowOptions] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
@@ -70,6 +72,10 @@ const Home = () => {
     }));
   };
 
+  const handleActiveFeature = (feature) => {
+    setActiveFeature(feature);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     createNewNote(titleState, description);
@@ -84,7 +90,7 @@ const Home = () => {
         Welcome to MindNote.
       </span>
 
-      <div className="grid grid-cols-4 gap-4 mt-4 cursor-pointer max-[821px]:grid-cols-2">
+      <div className="grid grid-cols-4 gap-4 mt-4 cursor-pointer max-[835px]:grid-cols-2">
         <div className="card" onClick={() => setShowModal(true)}>
           <div className="w-10 h-10 rounded-full flexCenter bg-secondary">
             <IoCreateOutline className="w-6 h-6 " />
@@ -92,15 +98,39 @@ const Home = () => {
           <span className="text-[16px] max-[450px]:text-[15px]">Create</span>
         </div>
 
-        <div className="card" onClick={handleAllNotes}>
-          <div className="w-10 h-10 rounded-full flexCenter bg-secondary">
+        <div
+          className={`card ${
+            activeFeature === "All Notes" ? "bg-secondary" : ""
+          }`}
+          onClick={() => {
+            handleActiveFeature("All Notes");
+            handleAllNotes();
+          }}
+        >
+          <div
+            className={`w-10 h-10 rounded-full flexCenter  ${
+              activeFeature === "All Notes" ? "bg-primary" : "bg-secondary"
+            } `}
+          >
             <IoIosNotifications className="w-6 h-6 " />
           </div>
           <span className="text-[16px] max-[450px]:text-[15px]">All Notes</span>
         </div>
 
-        <div className="card" onClick={handlePinnedNotes}>
-          <div className="w-10 h-10 rounded-full flexCenter bg-secondary">
+        <div
+          className={`card ${
+            activeFeature === "Pinned Notes" ? "bg-secondary" : ""
+          }`}
+          onClick={() => {
+            setActiveFeature("Pinned Notes");
+            handlePinnedNotes();
+          }}
+        >
+          <div
+            className={`w-10 h-10 rounded-full flexCenter  ${
+              activeFeature === "Pinned Notes" ? "bg-primary" : "bg-secondary"
+            } `}
+          >
             <TbPinnedFilled className="w-6 h-6 " />
           </div>
           <span className="text-[16px] max-[450px]:text-[15px]">

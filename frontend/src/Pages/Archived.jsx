@@ -7,10 +7,12 @@ import { useState } from "react";
 const Archived = () => {
   const { notes, deleteNote, archivedNote } = useAppContext();
 
-  const archivedNotes = notes.filter((note) => note.archived);
+  const archivedNotes = notes
+    .filter((note) => note.archived)
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   const [showOptions, setShowOptions] = useState({});
 
-  const handleShopwOptions = (id) => {
+  const handleShowOptions = (id) => {
     setShowOptions((prev) => ({
       [id]: !prev[id],
     }));
@@ -28,7 +30,10 @@ const Archived = () => {
           <div className="relative flex flex-col flex-wrap gap-3 mt-2">
             {archivedNotes && archivedNotes.length > 0 ? (
               archivedNotes.map((note) => (
-                <div key={note._id && note._id} className="relative">
+                <div
+                  key={note._id && note._id}
+                  className="relative cursor-not-allowed"
+                >
                   <div className="w-full py-4 pl-6 pr-1 rounded-lg bg-cardDark flexBetween">
                     <div className="flex items-center w-full gap-6">
                       <button>
@@ -48,7 +53,7 @@ const Archived = () => {
                       onClick={(e) => {
                         e.stopPropagation();
                         e.preventDefault();
-                        handleShopwOptions(note._id);
+                        handleShowOptions(note._id);
                       }}
                     >
                       <BsThreeDotsVertical

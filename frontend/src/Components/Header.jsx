@@ -6,7 +6,7 @@ import { IoMdClose } from "react-icons/io";
 import { FaGithub, FaInstagram } from "react-icons/fa";
 import { navs } from "../../const";
 import { useNavigate } from "react-router-dom";
-import Menu from "@mui/material/Menu";
+
 const Header = () => {
   const { user, active, setActive } = useAppContext();
   const [openNavbar, setOpenNavbar] = useState(false);
@@ -43,7 +43,7 @@ const Header = () => {
         </div>
 
         <div
-          className="block p-2 border rounded-lg cursor-pointer md:hidden border-cardDark"
+          className="hidden p-2 border rounded-lg cursor-pointer max-[769px]:block border-cardDark"
           onClick={toggleNavbar}
         >
           <CiMenuFries size={18} className="text-light" />
@@ -103,7 +103,7 @@ const Header = () => {
         </div>
 
         <div
-          className="items-center hidden gap-3 px-4 py-2 rounded-2xl bg-cardDark hover:bg-primary md:flex"
+          className="items-center max-[769px]:hidden gap-3 px-4 py-2 rounded-2xl bg-cardDark hover:bg-primary flex"
           onClick={toggleUserDetails}
         >
           {user && user.imageUrl ? (
