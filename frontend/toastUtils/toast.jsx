@@ -27,3 +27,17 @@ export const notifyError = (message) => {
     transition: Slide,
   });
 };
+
+export const notifyCopyClipBoard = (message) => {
+  toast.success(message, {
+    position: "bottom-center",
+    autoClose: 2000,
+    hideProgressBar: true,
+    closeOnClick: false,
+    pauseOnHover: false,
+    draggable: false,
+    progress: undefined,
+    theme: "light",
+    transition: Slide,
+  });
+};

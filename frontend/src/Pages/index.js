@@ -5,4 +5,5 @@ import Note from "./Note";
 import Archived from "./Archived";
 import Feature from "./Feature";
 import Prompt from "./Prompt";
-export { Hero, Home, Settings, Note, Archived, Feature, Prompt };
+import Profile from "./Profile";
+export { Hero, Home, Settings, Note, Archived, Feature, Prompt, Profile };

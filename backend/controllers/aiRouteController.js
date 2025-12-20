@@ -129,7 +129,7 @@ export const generateNoteFromAudio = async (req, res) => {
             },
           },
           {
-            text: "The audio above is the user's spoken question. Provide a concise, correct text answer to the spoken question. Do not return a verbatim transcription — return only the reply.",
+            text: "The audio above is the user's spoken question. First, provide a verbatim TRANSCRIPT of the audio, prefaced with the label 'TRANSCRIPT:' on its own line. Then provide a concise, correct reply prefaced with the label 'REPLY:' on its own line. Use this exact format:\n\nTRANSCRIPT:\n<transcript text>\n\nREPLY:\n<reply text>\n\nEnsure both sections are present and clearly labeled.",
           },
         ],
       },
@@ -151,13 +151,17 @@ export const generateNoteFromAudio = async (req, res) => {
       /TRANSCRIPT:\s*([\s\S]*?)\s*(?:\r?\n)+\s*REPLY:\s*([\s\S]*)/i
     );
     const transcript = parsed?.[1]?.trim() || "";
+    const aiReply = parsed?.[2]?.trim() || aiResponse.trim();
+
+    console.log("Transcript:", transcript);
+    console.log("AI Reply:", aiReply);
 
     return res.status(200).json({
       success: true,
       message: "Audio processed successfully",
       data: {
         title: transcript,
-        content: aiResponse,
+        content: aiReply,
       },
     });
   } catch (error) {

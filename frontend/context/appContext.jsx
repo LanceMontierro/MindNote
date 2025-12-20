@@ -276,18 +276,12 @@ const ContextApi = ({ children }) => {
     try {
       setLoading(true);
       if (!userAccount) return;
+
       const formData = new FormData();
       formData.append("audio", audioBlob);
       formData.append("userId", userAccount.id);
 
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "user",
-          title: "Audio Note",
-          timeStamp: new Date().toISOString(),
-        },
-      ]);
+      console.log(audioBlob);
 
       const response = await axios.post(
         `${API_URL}/ai/audio-prompt`,
@@ -304,6 +298,11 @@ const ContextApi = ({ children }) => {
 
         setMessages((prev) => [
           ...prev,
+          {
+            role: "user",
+            title,
+            timeStamp: new Date().toISOString(),
+          },
           {
             role: "AI",
             content: aiContent,

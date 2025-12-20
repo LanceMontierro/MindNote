@@ -3,7 +3,7 @@ import App from "./../src/App";
 import Dashboard from "../src/Pages/Dashboard";
 import Settings from "./../src/Pages/Settings";
 import Note from "../src/Pages/Note";
-import { Archived, Prompt } from "../src/Pages";
+import { Archived, Prompt, Profile } from "../src/Pages";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -28,5 +28,9 @@ export const router = createBrowserRouter([
   {
     path: "/mindbot",
     element: <Prompt />,
+  },
+  {
+    path: "/profile",
+    element: <Profile />,
   },
 ]);

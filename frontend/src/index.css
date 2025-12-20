@@ -1,16 +1,19 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import "tailwindcss";
 
 @theme {
-  --color-light: #101010;
   --color-primary: #e5f1fe;
   --color-secondary: #89c2fe;
   --bg-color: #ffffff;
 
-  --color-cardDark: #f3f3f9;
+  --color-cardDark: #171717;
+  --color-icons: #0a0a0a;
+  --color-border: #222222;
+  --color-hover: #333333;
+  --color-descriptionText: #a0a0a0;
 
-  --font-montserrat: "Montserrat", sans-serif;
+  /* --font-montserrat: "Montserrat", sans-serif; */
 
   --text-textXxl: 89px;
   --text-textXl: 52px;
@@ -22,8 +25,10 @@
 
 @layer base {
   body {
-    font-family: "Poppins", sans-serif;
+    font-family: "Inter", sans-serif;
     background-color: var(--bg-color);
+    background-color: #000000;
+    color: #fafafa;
   }
 
   h1 {
@@ -49,14 +54,14 @@
 
 @layer utilities {
   .txtGradient {
-    @apply bg-gradient-to-r from-blue-500 to-purple-500 text-transparent bg-clip-text;
+    @apply text-transparent bg-clip-text bg-gradient-to-b from-white to-[#a1a1a1];
   }
 
   .flexCenter {
-    @apply flex justify-center items-center;
+    @apply flex items-center justify-center;
   }
   .flexBetween {
-    @apply flex justify-between items-center;
+    @apply flex items-center justify-between;
   }
   .listBg {
     background: linear-gradient(to right, #20ffff, #0c61cc 30%, #eb0078 150%);
@@ -65,10 +70,10 @@
 
 @layer components {
   .card {
-    @apply flex flex-1 flex-col gap-2 rounded-2xl py-4 pl-6 pr-1 bg-cardDark hover:bg-primary;
+    @apply flex flex-col flex-1 gap-2 py-4 pl-6 pr-1 border cursor-pointer rounded-2xl border-border bg-cardDark;
   }
   .cardSettings {
-    @apply bg-cardDark py-4 pl-6 pr-1 rounded-lg w-full h-[64px] hover:bg-primary duration-200 ease-in-out cursor-pointer;
+    @apply bg-cardDark py-4 pl-6 pr-1 rounded-lg w-full h-[64px] hover:bg-hover duration-200 ease-in-out cursor-pointer;
   }
 }
 

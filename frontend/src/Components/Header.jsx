@@ -5,20 +5,16 @@ import { useState, useEffect } from "react";
 import { IoMdClose } from "react-icons/io";
 import { FaGithub, FaInstagram } from "react-icons/fa";
 import { navs } from "../../const";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Header = () => {
   const { user, active, setActive } = useAppContext();
   const [openNavbar, setOpenNavbar] = useState(false);
-  const [openUserDetails, setOpenUserDetails] = useState(false);
+
   const navigate = useNavigate();
 
   const toggleNavbar = () => {
     setOpenNavbar((prev) => !prev);
-  };
-
-  const toggleUserDetails = () => {
-    setOpenUserDetails((prev) => !prev);
   };
 
   useEffect(() => {
@@ -37,8 +33,8 @@ const Header = () => {
       <div className="px-4 py-2 mx-auto flexBetween max-w-7xl ">
         <div className="flex items-center">
           <img src={Logo} alt="MindNote Logo" className="w-14 h-14 " />
-          <span className="txtGradient font-black text-[20px] max-[468px]:text-textSm font-montserrat">
-            M!ndNote
+          <span className="txtGradient font-black text-[20px] max-[468px]:text-textSm">
+            MINDNOTE
           </span>
         </div>
 
@@ -53,7 +49,7 @@ const Header = () => {
           className={`fixed top-0 h-full z-10 flex flex-col items-center gap-3 px-4 py-2 bg-white md:hidden w-full transition-all ease-in-out duration-500 
                ${openNavbar ? "right-0 " : "right-[-100%]"} `}
         >
-          <div className="w-full flex justify-end">
+          <div className="flex justify-end w-full">
             <div
               className="block p-2 border rounded-lg cursor-pointer md:hidden border-cardDark"
               onClick={() => setOpenNavbar(false)}
@@ -61,7 +57,7 @@ const Header = () => {
               <IoMdClose size={20} />
             </div>
           </div>
-          <div className="flex flex-col items-center w-full mt-2 gap-3">
+          <div className="flex flex-col items-center w-full gap-3 mt-2">
             {navs.map((nav, i) => {
               const Icon = nav.icon;
               return (
@@ -73,7 +69,7 @@ const Header = () => {
                   }`}
                 >
                   <Icon className="text-[22px]" />
-                  <span className=" text-textSm font-medium">{nav.name}</span>
+                  <span className="font-medium  text-textSm">{nav.name}</span>
                 </button>
               );
             })}
@@ -86,7 +82,7 @@ const Header = () => {
               target="_blank"
             >
               <FaGithub className="text-[22px]" />
-              <span className=" text-textSm font-medium">Github</span>
+              <span className="font-medium  text-textSm">Github</span>
             </a>
 
             <a
@@ -97,14 +93,14 @@ const Header = () => {
               target="_blank"
             >
               <FaInstagram className="text-[22px]" />
-              <span className=" text-textSm font-medium">Instagram</span>
+              <span className="font-medium  text-textSm">Instagram</span>
             </a>
           </div>
         </div>
 
-        <div
-          className="items-center max-[769px]:hidden gap-3 px-4 py-2 rounded-2xl bg-cardDark hover:bg-primary flex"
-          onClick={toggleUserDetails}
+        <Link
+          className="items-center max-[769px]:hidden gap-3 px-4 py-2 rounded-2xl bg-cardDark hover:bg-hover flex"
+          to={"/profile"}
         >
           {user && user.imageUrl ? (
             <img src={user.imageUrl} alt="" className="w-8 h-8 rounded-full" />
@@ -112,11 +108,17 @@ const Header = () => {
             <div className="bg-gray-200 rounded-full w-28 h-28" />
           )}
           {user && user.fullName ? (
-            <p className="text-light ">{user.firstName}</p>
+            <div>
+              <p className="text-light ">{user.firstName}</p>
+              <p className="text-descriptionText ">
+                {" "}
+                {user.emailAddresses[0].emailAddress}
+              </p>
+            </div>
           ) : (
             <p className="text-light ">Guest</p>
           )}
-          {openUserDetails && (
+          {/* {openUserDetails && (
             <div className="absolute top-16 right-[3%] bg-white shadow-lg rounded-lg z-[100] ">
               <div className="p-4">
                 <p className="font-semibold txtGradient">User Details</p>
@@ -134,7 +136,7 @@ const Header = () => {
                   Id: <span className="font-medium">{user.id}</span>
                 </p>
 
-                <p className="font-semibold">
+                <p classNam e="font-semibold">
                   Account Created:{" "}
                   <span className="font-medium">
                     {new Date(user.createdAt).toLocaleDateString("en-US", {
@@ -145,9 +147,9 @@ const Header = () => {
                   </span>
                 </p>
               </div>
-            </div>
-          )}
-        </div>
+            </div> 
+          )}  */}
+        </Link>
       </div>
     </header>
   );

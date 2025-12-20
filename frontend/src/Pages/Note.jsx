@@ -67,16 +67,16 @@ const Note = () => {
             </div>
 
             {showOptions && (
-              <div className="absolute right-0 rounded-lg shadow-lg top-20 bg-cardDark text-light z-200">
+              <div className="absolute right-0 text-white rounded-lg shadow-lg top-20 bg-cardDark z-200">
                 <button
-                  className="flex items-center w-full gap-2 px-4 py-4 text-left rounded-lg hover:bg-gray-200"
+                  className="flex items-center w-full gap-2 px-4 py-4 text-left rounded-lg hover:bg-hover"
                   onClick={handleEdit}
                 >
                   <FaEdit size={20} />
                   <p>Edit Note</p>
                 </button>
                 <button
-                  className="flex items-center w-full gap-2 px-4 py-4 text-left hover:bg-gray-200"
+                  className="flex items-center w-full gap-2 px-4 py-4 text-left hover:bg-hover"
                   onClick={() => {
                     archivedNote(note);
                     navigate("/home");
@@ -86,7 +86,7 @@ const Note = () => {
                   <p>Add to Archived</p>
                 </button>
                 <button
-                  className="flex items-center w-full gap-2 px-4 py-4 text-left hover:bg-gray-200"
+                  className="flex items-center w-full gap-2 px-4 py-4 text-left hover:bg-hover"
                   onClick={() => {
                     pinNote(note);
                     setShowOptions(false);
@@ -105,7 +105,7 @@ const Note = () => {
                   )}
                 </button>
                 <button
-                  className="flex items-center w-full gap-2 px-4 py-3 text-left rounded-lg hover:bg-gray-200"
+                  className="flex items-center w-full gap-2 px-4 py-3 text-left rounded-lg hover:bg-hover"
                   onClick={handleDelete}
                 >
                   <FaTrashCan size={20} />
@@ -165,21 +165,21 @@ const Note = () => {
         {showEditModal && (
           <>
             <div className="fixed inset-0 bg-black opacity-50"></div>
-            <div className="absolute p-4 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg top-1/2 left-1/2 z-100">
+            <div className="absolute p-4 transform -translate-x-1/2 -translate-y-1/2 bg-cardDark rounded-lg shadow-lg top-1/2 left-1/2 z-100">
               <p className="mb-4 font-bold text-textSm text-light ">
                 Edit Note
               </p>
               <input
                 type="text"
                 placeholder="Title"
-                className="w-full p-2 mb-4 border border-gray-300 rounded text-light"
+                className="w-full p-2 mb-4 border border-border rounded text-light"
                 value={title}
                 onChange={(e) => setTitleState(e.target.value)}
                 required
               />
               <textarea
                 placeholder="Content"
-                className="w-full p-2 mb-4 border border-gray-300 rounded text-light"
+                className="w-full p-2 mb-4 border border-border rounded text-light"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 required
@@ -187,7 +187,7 @@ const Note = () => {
 
               <div className="flex gap-2 items-center max-[640px]:flex-col">
                 <button
-                  className="w-full px-4 py-2 text-white bg-blue-500 rounded cursor-pointer"
+                  className="w-full px-4 py-2 text-black bg-[#fafafa]  rounded cursor-pointer"
                   onClick={async () => {
                     const result = await updateNote(title, content, id);
                     if (result?.success) {
@@ -203,7 +203,7 @@ const Note = () => {
                   Update Note
                 </button>
                 <button
-                  className=" bg-cardDark border-[#fff] text-light px-4 py-2 rounded w-full cursor-pointer"
+                  className="  border-border border-2 hover:bg-hover duration-200 ease-in-out text-light px-4 py-2 rounded w-full cursor-pointer"
                   onClick={() => setShowEditModal(false)}
                 >
                   Cancel

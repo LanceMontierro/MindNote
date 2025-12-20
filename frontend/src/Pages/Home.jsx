@@ -85,14 +85,14 @@ const Home = () => {
   };
 
   return (
-    <section className="flex flex-col flex-1 px-4 py-2 md:pb-32 pb-8 mt-4 border text-light border-cardDark rounded-2xl">
+    <section className="flex flex-col flex-1 px-4 py-2 pb-8 mt-4 border-2 md:pb-32 text-light border-cardDark rounded-2xl">
       <span className="text-textMd font-semibold mt-4 max-[821px]:text-center max-[500px]:text-[22px]">
         Welcome to MindNote.
       </span>
 
       <div className="grid grid-cols-4 gap-4 mt-4 cursor-pointer max-[835px]:grid-cols-2">
         <div className="card" onClick={() => setShowModal(true)}>
-          <div className="w-10 h-10 rounded-full flexCenter bg-secondary">
+          <div className="w-10 h-10 rounded-xl flexCenter bg-icons">
             <IoCreateOutline className="w-6 h-6 " />
           </div>
           <span className="text-[16px] max-[450px]:text-[15px]">Create</span>
@@ -100,7 +100,7 @@ const Home = () => {
 
         <div
           className={`card ${
-            activeFeature === "All Notes" ? "bg-secondary" : ""
+            activeFeature === "All Notes" ? "bg-secondary text-black" : ""
           }`}
           onClick={() => {
             handleActiveFeature("All Notes");
@@ -108,8 +108,8 @@ const Home = () => {
           }}
         >
           <div
-            className={`w-10 h-10 rounded-full flexCenter  ${
-              activeFeature === "All Notes" ? "bg-primary" : "bg-secondary"
+            className={`w-10 h-10 rounded-xl flexCenter  ${
+              activeFeature === "All Notes" ? "bg-primary" : "bg-icons"
             } `}
           >
             <IoIosNotifications className="w-6 h-6 " />
@@ -119,7 +119,7 @@ const Home = () => {
 
         <div
           className={`card ${
-            activeFeature === "Pinned Notes" ? "bg-secondary" : ""
+            activeFeature === "Pinned Notes" ? "bg-secondary text-black" : ""
           }`}
           onClick={() => {
             setActiveFeature("Pinned Notes");
@@ -127,8 +127,8 @@ const Home = () => {
           }}
         >
           <div
-            className={`w-10 h-10 rounded-full flexCenter  ${
-              activeFeature === "Pinned Notes" ? "bg-primary" : "bg-secondary"
+            className={`w-10 h-10 rounded-xl flexCenter  ${
+              activeFeature === "Pinned Notes" ? "bg-primary" : "bg-icons"
             } `}
           >
             <TbPinnedFilled className="w-6 h-6 " />
@@ -139,7 +139,7 @@ const Home = () => {
         </div>
 
         <Link to="/archived" className="card">
-          <div className="w-10 h-10 rounded-full flexCenter bg-secondary">
+          <div className="w-10 h-10 rounded-xl flexCenter bg-icons">
             <RiInboxArchiveLine className="w-6 h-6 " />
           </div>
           <span className="text-[16px] max-[450px]:text-[15px]">Archives</span>
@@ -184,7 +184,7 @@ const Home = () => {
               {showOptions[note._id] && (
                 <div className="absolute right-0 bottom-[-120px] bg-cardDark rounded-lg shadow-lg  z-200">
                   <button
-                    className="flex items-center w-full gap-2 px-4 py-4 text-left rounded-lg hover:bg-gray-200"
+                    className="flex items-center w-full gap-2 px-4 py-4 text-left rounded-lg hover:bg-hover"
                     onClick={(e) => {
                       e.stopPropagation();
                       e.preventDefault();
@@ -206,7 +206,7 @@ const Home = () => {
                   </button>
 
                   <button
-                    className="flex items-center w-full gap-2 px-4 py-4 text-left hover:bg-gray-200"
+                    className="flex items-center w-full gap-2 px-4 py-4 text-left hover:bg-hover"
                     onClick={(e) => {
                       e.stopPropagation();
                       e.preventDefault();
@@ -227,7 +227,7 @@ const Home = () => {
                     )}
                   </button>
                   <button
-                    className="flex items-center w-full gap-2 px-4 py-3 text-left rounded-lg hover:bg-gray-200"
+                    className="flex items-center w-full gap-2 px-4 py-3 text-left rounded-lg hover:bg-hover"
                     onClick={(e) => {
                       e.stopPropagation();
                       e.preventDefault();
@@ -245,7 +245,7 @@ const Home = () => {
           <p className="mt-4 text-gray-500">No notes found.</p>
         )}
         {totalPage > 0 && (
-          <div className="flex justify-center mt-4">
+          <div className="z-50 flex justify-center mt-4 ">
             <Pagination
               color="primary"
               count={totalPage}
@@ -260,26 +260,26 @@ const Home = () => {
       {showModal && (
         <>
           <div className="fixed inset-0 bg-black opacity-50"></div>
-          <div className="absolute p-4 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg top-1/2 left-1/2 z-100 max-[480px]:w-[80%]  ">
+          <div className="absolute p-4 transform -translate-x-1/2 -translate-y-1/2 bg-cardDark rounded-xl shadow-lg top-1/2 left-1/2 z-100 max-[480px]:w-[80%]  ">
             <h2 className="mb-4 text-textSm text-light ">Create New Note</h2>
             <input
               type="text"
               placeholder="Please Enter at least title"
-              className="w-full p-2 mb-4 border border-gray-300 rounded text-light"
+              className="w-full p-2 mb-4 border rounded border-border text-light"
               onChange={(e) => setTitle(e.target.value)}
               required
               value={titleState}
             />
             <textarea
               placeholder="Content"
-              className="w-full p-2 mb-4 border border-gray-300 rounded text-light"
+              className="w-full p-2 mb-4 border rounded border-border text-light"
               onChange={(e) => setDescription(e.target.value)}
               value={description}
             ></textarea>
             <button
               disabled={!titleState}
               onClick={handleSubmit}
-              className={`px-4 py-2 text-white rounded bg-blue-500 max-[480px]:w-full max-[480px]:block ${
+              className={`px-4 py-2 text-black rounded bg-[#fafafa] max-[480px]:w-full max-[480px]:block ${
                 titleState.length < 1
                   ? "opacity-60 cursor-not-allowed"
                   : "cursor-pointer  "
@@ -289,7 +289,7 @@ const Home = () => {
             </button>
             <button
               onClick={() => setShowModal(false)}
-              className="ml-2 bg-cardDark border-[#fff] text-light px-4 py-2 rounded cursor-pointer max-w-md max-[480px]:w-full max-[480px]:mt-2 max-[480px]:ml-0"
+              className="ml-2 border-2 border-border hover:bg-hover text-light px-4 py-2 rounded cursor-pointer max-w-md max-[480px]:w-full max-[480px]:mt-2 max-[480px]:ml-0"
             >
               Cancel
             </button>

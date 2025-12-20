@@ -112,7 +112,7 @@ const Feature = () => {
           <img src={Create} alt="Create" className="object-contain w-[300px]" />
         </div>
         <div className="w-full" id="create-text">
-          <h2 className="md:text-[50px] text-textMd font-bold font-montserrat ">
+          <h2 className="md:text-[50px] text-textMd font-bold ">
             ✏️ Create Note
           </h2>
           <ul className="space-y-3 text-gray-300 text-textSm mt-2 ">
@@ -138,9 +138,7 @@ const Feature = () => {
 
       <div className="flexCenter flex-col md:flex-row gap-10 mt-10 ">
         <div className="w-full" id="pin-text">
-          <h2 className="md:text-[50px] text-textMd font-bold font-montserrat ">
-            📌 Pin Notes
-          </h2>
+          <h2 className="md:text-[50px] text-textMd font-bold">📌 Pin Notes</h2>
           <ul className="space-y-3 text-gray-300 text-textSm mt-2 ">
             <li className="flex items-center gap-3 list-disc">
               <span className="w-2.5 h-2.5 bg-[#20ffff] " />

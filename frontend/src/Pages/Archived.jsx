@@ -65,7 +65,7 @@ const Archived = () => {
                     {showOptions[note._id] && (
                       <div className="absolute right-0 bottom-[-70px] bg-cardDark rounded-lg shadow-lg z-200">
                         <button
-                          className="flex items-center w-full gap-2 px-4 py-4 text-left rounded-lg hover:bg-gray-200"
+                          className="flex items-center w-full gap-2 px-4 py-4 text-left rounded-lg hover:bg-hover"
                           onClick={(e) => {
                             e.stopPropagation();
                             e.preventDefault();
@@ -77,7 +77,7 @@ const Archived = () => {
                         </button>
 
                         <button
-                          className="flex items-center w-full gap-2 px-4 py-4 text-left rounded-lg hover:bg-gray-200"
+                          className="flex items-center w-full gap-2 px-4 py-4 text-left rounded-lg hover:bg-hover"
                           onClick={(e) => {
                             e.stopPropagation();
                             e.preventDefault();
@@ -93,7 +93,7 @@ const Archived = () => {
                 </div>
               ))
             ) : (
-              <p className=" text-gray-500 mt-4">No archived notes found.</p>
+              <p className="mt-4 text-gray-500 ">No archived notes found.</p>
             )}
           </div>
         </div>
