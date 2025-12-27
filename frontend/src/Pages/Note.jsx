@@ -49,8 +49,8 @@ const Note = () => {
       <Header />
       <div className="flex justify-between px-4 mx-auto max-w-7xl gap-14 ">
         <Sidebar />
-        <div className="relative flex flex-col flex-1 py-4 pb-32 pl-6 pr-1 mt-4 border rounded-lg text-light border-cardDark ">
-          <div className="gap-2 text-gray-400 flexBetween">
+        <div className="relative flex flex-col flex-1 py-4 pb-32 pl-6 pr-1 mt-4 border rounded-lg text-light border-cardDark l ">
+          <div className="gap-2 text-descriptionText flexBetween">
             <Link
               className="flex items-center gap-2 hover:text-light"
               to="/home"
@@ -117,7 +117,7 @@ const Note = () => {
 
           <div className="flex flex-col flex-1 py-2 pb-32 text-light">
             <div className="mt-4">
-              <h2 className="text-[24px]">{title}</h2>
+              <h2 className="text-[24px] font-bold">{title}</h2>
               <p className="text-[16px] mt-2">
                 {content.split("\n").map((line, index) => (
                   <span key={index}>
@@ -134,14 +134,17 @@ const Note = () => {
           <>
             <>
               <div className="fixed inset-0 bg-black opacity-50"></div>
-              <div className="absolute p-4 transform -translate-x-1/2 -translate-y-1/2 rounded-lg shadow-lg top-1/2 left-1/2 bg-cardDark z-100">
-                <p className="mb-4 font-bold text-textSm text-light ">
-                  Are you sure you want to delete this note?
+              <div className="absolute p-4 transform -translate-x-1/2 -translate-y-1/2 rounded-lg shadow-lg top-1/2 left-1/2 bg-cardDark z-100 max-[540px]:w-[80%]">
+                <h4 className="font-semibold text-[26px] max-[640px]:text-center">
+                  Delete this note?
+                </h4>
+                <p className="mb-4  text-textSm text-descriptionText max-[640px]:text-center max-[640px]:text-textXs ">
+                  Are you sure you want to remove this note?
                 </p>
 
                 <div className="flex gap-2 items-center max-[640px]:flex-col">
                   <button
-                    className="w-full px-4 py-2 text-white duration-300 ease-in-out bg-red-600 rounded cursor-pointer hover:bg-red-800"
+                    className="px-4 py-2 w-full bg-[#fafafa] hover:opacity-80 ease-in-out duration-300 rounded-xl text-black"
                     onClick={() => {
                       deleteNote(id);
                       setShowDeleteModal(false);
@@ -151,7 +154,7 @@ const Note = () => {
                     Delete Note
                   </button>
                   <button
-                    className=" bg-cardDark border-[#fff]  px-4 py-2 rounded cursor-pointer w-full"
+                    className="border-2 border-border hover:bg-hover duration-200 ease-in-out px-4 py-2 rounded cursor-pointer w-full"
                     onClick={() => setShowDeleteModal(false)}
                   >
                     Cancel

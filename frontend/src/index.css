@@ -70,7 +70,7 @@
 
 @layer components {
   .card {
-    @apply flex flex-col flex-1 gap-2 py-4 pl-6 pr-1 border cursor-pointer rounded-2xl border-border bg-cardDark;
+    @apply flex flex-col flex-1 gap-2 py-4 pl-6 pr-1 border-2 cursor-pointer rounded-2xl border-border bg-cardDark;
   }
   .cardSettings {
     @apply bg-cardDark py-4 pl-6 pr-1 rounded-lg w-full h-[64px] hover:bg-hover duration-200 ease-in-out cursor-pointer;

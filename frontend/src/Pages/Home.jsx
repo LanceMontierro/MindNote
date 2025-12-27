@@ -252,6 +252,20 @@ const Home = () => {
               page={currentPage}
               onChange={handlePageChange}
               variant="outlined"
+              shape="rounded"
+              sx={{
+                "& .MuiPaginationItem-root": {
+                  color: "white", // number color
+                  borderColor: "#2563eb",
+                },
+                "& .Mui-selected": {
+                  backgroundColor: "#2563eb", // blue-500
+                  color: "white",
+                },
+                "& .MuiPaginationItem-root:hover": {
+                  backgroundColor: "#2563eb", // hover blue
+                },
+              }}
             />
           </div>
         )}

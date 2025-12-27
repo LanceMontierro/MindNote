@@ -216,12 +216,19 @@ const ContextApi = ({ children }) => {
       setLoading(true);
       if (!userAccount) return;
 
+      // Add user message and a temporary AI placeholder so the UI shows 'Recognizing...'
       setMessages((prev) => [
         ...prev,
         {
           role: "user",
           title: userPrompt,
           timeStamp: new Date().toISOString(),
+        },
+        {
+          role: "AI",
+          content: "Recognizing...",
+          timeStamp: new Date().toISOString(),
+          temp: true,
         },
       ]);
 
@@ -233,18 +240,25 @@ const ContextApi = ({ children }) => {
       if (response.status === 200) {
         const aiContent = response.data.data.content;
         const title = response.data.data.title;
-        setMessages((prev) => [
-          ...prev,
-          {
-            role: "AI",
-            content: aiContent,
-            title,
-            timeStamp: new Date().toISOString(),
-          },
-        ]);
+
+        // Replace the temporary AI placeholder with the actual response
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.role === "AI" && m.temp
+              ? {
+                  ...m,
+                  content: aiContent,
+                  title,
+                  temp: false,
+                  timeStamp: new Date().toISOString(),
+                }
+              : m
+          )
+        );
       }
     } catch (error) {
       console.error("Error generating note:", error);
+      // Replace the placeholder with an error message
     } finally {
       setLoading(false);
     }
@@ -277,6 +291,25 @@ const ContextApi = ({ children }) => {
       setLoading(true);
       if (!userAccount) return;
 
+      const timeStamp = new Date().toISOString();
+
+      // Prepend a temporary user placeholder (will be replaced with transcript) and an AI placeholder
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "user",
+          title: "Generating transcript...",
+          timeStamp,
+          temp: true,
+        },
+        {
+          role: "AI",
+          content: "Recognizing...",
+          timeStamp,
+          temp: true,
+        },
+      ]);
+
       const formData = new FormData();
       formData.append("audio", audioBlob);
       formData.append("userId", userAccount.id);
@@ -296,20 +329,29 @@ const ContextApi = ({ children }) => {
         const aiContent = response.data.data.content;
         const title = response.data.data.title;
 
-        setMessages((prev) => [
-          ...prev,
-          {
-            role: "user",
-            title,
-            timeStamp: new Date().toISOString(),
-          },
-          {
-            role: "AI",
-            content: aiContent,
-            title,
-            timeStamp: new Date().toISOString(),
-          },
-        ]);
+        // Update the temporary user/AI placeholders with the returned transcript and reply
+        setMessages((prev) =>
+          prev.map((m) => {
+            if (m.role === "AI" && m.temp) {
+              return {
+                ...m,
+                content: aiContent,
+                title,
+                temp: false,
+                timeStamp: new Date().toISOString(),
+              };
+            }
+            if (m.role === "user" && m.temp) {
+              return {
+                ...m,
+                title,
+                temp: false,
+                timeStamp: m.timeStamp || new Date().toISOString(),
+              };
+            }
+            return m;
+          })
+        );
       }
     } catch (error) {
       console.error("Error generating note from audio:", error);

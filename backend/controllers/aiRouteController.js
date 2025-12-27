@@ -129,7 +129,7 @@ export const generateNoteFromAudio = async (req, res) => {
             },
           },
           {
-            text: "The audio above is the user's spoken question. First, provide a verbatim TRANSCRIPT of the audio, prefaced with the label 'TRANSCRIPT:' on its own line. Then provide a concise, correct reply prefaced with the label 'REPLY:' on its own line. Use this exact format:\n\nTRANSCRIPT:\n<transcript text>\n\nREPLY:\n<reply text>\n\nEnsure both sections are present and clearly labeled.",
+            text: "The audio above is the user's spoken question. First, provide a verbatim TRANSCRIPT of the audio, prefaced with the label 'TRANSCRIPT:' on its own line. Then provide a concise, correct reply prefaced with the label 'REPLY:' on its own line. Use this exact format:\n\nTRANSCRIPT:\n<transcript text>\n\nREPLY:\n<reply text>\n\nEnsure both sections are present and clearly labeled, do not put the transcript, and the reply word in a code block.",
           },
         ],
       },

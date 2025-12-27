@@ -39,14 +39,14 @@ const Header = () => {
         </div>
 
         <div
-          className="hidden p-2 border rounded-lg cursor-pointer max-[769px]:block border-cardDark"
+          className="hidden p-2 border-2 rounded-lg cursor-pointer max-[769px]:block border-cardDark"
           onClick={toggleNavbar}
         >
-          <CiMenuFries size={18} className="text-light" />
+          <CiMenuFries size={18} />
         </div>
 
         <div
-          className={`fixed top-0 h-full z-10 flex flex-col items-center gap-3 px-4 py-2 bg-white md:hidden w-full transition-all ease-in-out duration-500 
+          className={`fixed top-0 h-full z-10 flex flex-col items-center gap-3 px-4 py-2 bg-cardDark md:hidden w-full transition-all ease-in-out duration-500 
                ${openNavbar ? "right-0 " : "right-[-100%]"} `}
         >
           <div className="flex justify-end w-full">
@@ -65,7 +65,9 @@ const Header = () => {
                   key={i}
                   onClick={() => handleActive(nav.name)}
                   className={`flex items-center py-3 px-2 gap-2 rounded-2xl text-light w-full justify-center  ${
-                    active === nav.name ? "bg-cardDark border-[#fff] " : ""
+                    active === nav.name
+                      ? "bg-cardDark border-2 shadow-2xl border-border "
+                      : ""
                   }`}
                 >
                   <Icon className="text-[22px]" />
@@ -99,7 +101,7 @@ const Header = () => {
         </div>
 
         <Link
-          className="items-center max-[769px]:hidden gap-3 px-4 py-2 rounded-2xl bg-cardDark hover:bg-hover flex"
+          className="items-center max-[769px]:hidden gap-3 px-4 py-2 rounded-2xl bg-cardDark border-2 border-border hover:bg-hover flex"
           to={"/profile"}
         >
           {user && user.imageUrl ? (

@@ -1,11 +1,12 @@
 import { Header, Sidebar, Loading } from "../Components";
-import { IoMdSend, IoIosAdd, IoIosClose } from "react-icons/io";
+import { IoIosAdd, IoIosClose } from "react-icons/io";
 import { MdSaveAlt } from "react-icons/md";
 import Tooltip from "@mui/material/Tooltip";
 import { IoCopyOutline } from "react-icons/io5";
 import { useState, useRef } from "react";
 import { useAppContext } from "../../context/appContext";
-import { FaMicrophone } from "react-icons/fa";
+import { FaMicrophone, FaArrowUp } from "react-icons/fa";
+
 import TimeAgo from "timeago-react";
 import { TbTools } from "react-icons/tb";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
@@ -27,6 +28,8 @@ const Ai = () => {
   const [saveNoteTitle, setSaveNoteTitle] = useState("");
   const [toolModal, setToolModal] = useState(false);
   const [recordModal, setRecordModal] = useState(false);
+  const lastMessageIndex = messages.length - 1;
+  console.log(lastMessageIndex);
 
   // Recordings
   const [isRecording, setIsRecording] = useState(false);
@@ -120,11 +123,7 @@ const Ai = () => {
                   : "items-center justify-center"
               }`}
             >
-              {loading ? (
-                <>
-                  <Loading />
-                </>
-              ) : messages.length > 0 ? (
+              {messages.length > 0 ? (
                 <>
                   {messages.map((msg, idx) => (
                     <div className="flex flex-col w-full" key={idx}>
@@ -151,21 +150,27 @@ const Ai = () => {
                         <div className="flex flex-col gap-4 px-3 py-2 mt-2 rounded-lg bg-cardDark w-fit">
                           <div className="flex flex-col items-center gap-4">
                             <p className="w-full">
-                              {msg.content.split("\n").map((line, i) => (
-                                <span key={i} className="block">
-                                  {line.replace(/\*/g, "")}
-                                </span>
-                              ))}
+                              {(msg.content ?? "Recognizing...")
+                                .split("\n")
+                                .map((line, i) => (
+                                  <span key={i} className="block">
+                                    {line.replace(/\*/g, "")}
+                                  </span>
+                                ))}
                             </p>
-                            <button
-                              className="self-end cursor-pointer"
-                              onClick={() => {
-                                navigator.clipboard.writeText(msg.content);
-                                notifyCopyClipBoard("Copied to clipboard!");
-                              }}
-                            >
-                              <IoCopyOutline />
-                            </button>
+
+                            {msg.content &&
+                              msg.content !== "Recognizing..." && (
+                                <button
+                                  className="self-end cursor-pointer border-2 border-border p-1 rounded-lg hover:bg-hover"
+                                  onClick={() => {
+                                    navigator.clipboard.writeText(msg.content);
+                                    notifyCopyClipBoard("Copied to clipboard!");
+                                  }}
+                                >
+                                  <IoCopyOutline />
+                                </button>
+                              )}
                           </div>
 
                           <small className="self-end text-xs text-gray-600">
@@ -198,15 +203,22 @@ const Ai = () => {
           {/* Prompt Input Section */}
 
           <div className="sticky w-full p-4 ">
-            <div className="relative">
+            <div className="relative w-full ">
+              <DotLottieReact
+                src="https://lottie.host/227e01af-82cf-495b-a568-8366f7a510a6/FDoQpLmdbI.lottie"
+                loop
+                autoplay
+                className="absolute left-[-50px] top-1/3  -translate-y-1/2 w-40 h-30 pointer-events-none animate-pulse"
+              />
               <textarea
                 name="prompt"
                 placeholder="Ask anything"
                 value={prompt}
                 rows={2}
                 onChange={(e) => setPrompt(e.target.value)}
-                className="w-full p-4  bg-cardDark rounded-2xl outline-none resize-none text-textSm text-light placeholder:text-textLight placeholder:text-textSm max-[530px]:placeholder:text-textXs max-[530px]:text-textXs "
+                className="w-full p-4 pl-14 bg-cardDark rounded-2xl outline-none resize-none text-textSm text-light placeholder:text-textLight placeholder:text-textSm max-[530px]:placeholder:text-textXs max-[530px]:text-textXs "
               ></textarea>
+
               <Tooltip title="Save Note" placement="bottom" arrow>
                 <button
                   className={`flexCenter text-black absolute bottom-4 right-12 px-2 py-2 bg-white rounded-full duration-300 ease-in-out mr-2 ${
@@ -271,7 +283,7 @@ const Ai = () => {
                 onClick={handleSubmit}
                 disabled={prompt.trim() === ""}
               >
-                <IoMdSend className="text-xl max-[530px]:text-sm text-center flexCenter  " />
+                <FaArrowUp className="text-xl max-[530px]:text-sm text-center flexCenter  " />
               </button>
             </div>
           </div>
