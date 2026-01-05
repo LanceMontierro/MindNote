@@ -28,22 +28,31 @@ const Sidebar = () => {
             <button
               key={i}
               onClick={() => handleActive(nav.name)}
-              className={`flex items-center py-3 px-2 gap-2 rounded-2xl text-light hover:bg-hover duration-200 ease-in-out  ${
-                active === nav.name ? "bg-cardDark border-border border " : ""
+              className={`flex items-center py-3 px-2 gap-2 rounded-2xl  hover:bg-[#89C2FE40] duration-200 ease-in-out  ${
+                active === nav.name ? "btn-secondary border-0 " : ""
               }`}
             >
-              <Icon className="text-[25px] border-2 border-border rounded-full" />
-              <span className=" text-[16px] font-medium">{nav.name}</span>
+              <div
+                className={`rounded-full p-1  ${
+                  active === nav.name ? "btn-secondary border-0" : "bg-cardDark"
+                } `}
+              >
+                <Icon className="text-[23px]" />
+              </div>
+
+              <span className=" font-medium">{nav.name}</span>
             </button>
           );
         })}
-        <button className="flex items-center py-3 px-2 gap-2 rounded-2xl text-light hover:bg-hover duration-200 ease-in-out">
-          <CiMicrophoneOn className="text-[25px] border-2 border-border rounded-full" />
+        <button className="flex items-center py-3 px-2 gap-2 rounded-2xl btn-purple  duration-200 ease-in-out cursor-pointer">
+          <div className="rounded-full p-1 btn-purple ">
+            <CiMicrophoneOn className="text-[23px]" />
+          </div>
           <span className=" text-[16px] font-medium">Record</span>
         </button>
       </div>
 
-      <div className="gap-2 px-2 py-3 mt-6  bg-cardDark border border-border rounded-2xl text-light">
+      <div className="gap-2 px-2 py-3 mt-6  bg-cardDark border border-border rounded-2xl">
         <h4 className="font-bold text-center txtGradient">Follow me on</h4>
         <div className="flex flex-col items-center">
           <a

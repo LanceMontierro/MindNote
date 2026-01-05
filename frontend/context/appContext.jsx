@@ -216,7 +216,7 @@ const ContextApi = ({ children }) => {
       setLoading(true);
       if (!userAccount) return;
 
-      // Add user message and a temporary AI placeholder so the UI shows 'Recognizing...'
+      // temporary AI placeholder so the UI shows 'Recognizing...'
       setMessages((prev) => [
         ...prev,
         {
@@ -258,7 +258,6 @@ const ContextApi = ({ children }) => {
       }
     } catch (error) {
       console.error("Error generating note:", error);
-      // Replace the placeholder with an error message
     } finally {
       setLoading(false);
     }

@@ -79,6 +79,51 @@ export const saveGeneratedNotes = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    const tools = [
+      {
+        googleSearch: {},
+      },
+    ];
+    const config = {
+      thinkingConfig: {
+        thinkingBudget: -1,
+      },
+      tools,
+    };
+    const model = "gemini-2.5-flash";
+    const contents = [
+      {
+        role: "user",
+        parts: [
+          {
+            text: `Please summarize the following content in a concise manner while retaining all key information:\n\n${content} and also add tags related to the content. Format the response as follows:\n\nSummary:\n<your summary here>\n\nTags:\n<tag1>, <tag2>, <tag3>`,
+          },
+        ],
+      },
+    ];
+
+    // Streaming response
+    const responseStream = await ai.models.generateContentStream({
+      model,
+      config,
+      contents,
+    });
+
+    let aiAnalyze = "";
+
+    for await (const chunk of responseStream) {
+      aiAnalyze += chunk.text || "";
+    }
+
+    console.log("AI analysis:", aiAnalyze);
+
+    const summary = aiAnalyze.split("Tags:")[0].replace("Summary:", "").trim();
+    const tagsText = aiAnalyze.split("Tags:")[1]?.trim() || "";
+    const tags = tagsText
+      .split(",")
+      .map((tag) => tag.trim())
+      .filter((tag) => tag.length > 0);
+
     const existingNote = user.notes.find((note) => note.title === title);
 
     if (existingNote) {
@@ -90,6 +135,8 @@ export const saveGeneratedNotes = async (req, res) => {
     const newNote = {
       title,
       content,
+      summary,
+      tags,
     };
 
     user.notes.push(newNote);

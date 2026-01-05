@@ -1,4 +1,4 @@
-import { Header, Sidebar, Loading } from "../Components";
+import { Header, Sidebar } from "../Components";
 import { IoIosAdd, IoIosClose } from "react-icons/io";
 import { MdSaveAlt } from "react-icons/md";
 import Tooltip from "@mui/material/Tooltip";
@@ -6,7 +6,6 @@ import { IoCopyOutline } from "react-icons/io5";
 import { useState, useRef } from "react";
 import { useAppContext } from "../../context/appContext";
 import { FaMicrophone, FaArrowUp } from "react-icons/fa";
-
 import TimeAgo from "timeago-react";
 import { TbTools } from "react-icons/tb";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
@@ -17,7 +16,7 @@ const Ai = () => {
     setPrompt,
     generateNote,
     saveGeneratedNote,
-    loading,
+
     messages,
     setMessages,
     user,
@@ -150,13 +149,11 @@ const Ai = () => {
                         <div className="flex flex-col gap-4 px-3 py-2 mt-2 rounded-lg bg-cardDark w-fit">
                           <div className="flex flex-col items-center gap-4">
                             <p className="w-full">
-                              {(msg.content ?? "Recognizing...")
-                                .split("\n")
-                                .map((line, i) => (
-                                  <span key={i} className="block">
-                                    {line.replace(/\*/g, "")}
-                                  </span>
-                                ))}
+                              {msg.content.split("\n").map((line, i) => (
+                                <span key={i} className="block">
+                                  {line.replace(/\*/g, "")}
+                                </span>
+                              ))}
                             </p>
 
                             {msg.content &&
@@ -189,10 +186,10 @@ const Ai = () => {
                     autoplay
                     loop
                   />
-                  <span className="text-textMd font-semibold mt-4 max-[821px]:text-center max-[500px]:text-[22px]">
+                  <span className="text-textMd font-semibold mt-4 max-[821px]:text-center max-[500px]:text-[25px]">
                     Welcome to MindBot.
                   </span>
-                  <span className="font-normal text-center text-textMd ">
+                  <span className="font-normal text-center text-textMd max-[500px]:text-textSm ">
                     What can I help you with today?
                   </span>
                 </>
@@ -319,9 +316,11 @@ const Ai = () => {
           {recordModal && (
             <>
               <div className="fixed inset-0 bg-black opacity-50"></div>
-              <div className="absolute p-4 transform -translate-x-1/2 -translate-y-1/2 bg-cardDark rounded-lg shadow-lg top-1/2 left-1/2 z-100 max-[480px]:w-[80%]">
+              <div className="absolute p-6 transform -translate-x-1/2 -translate-y-1/2 bg-cardDark rounded-lg shadow-lg top-1/2 left-1/2 z-100 max-[480px]:w-[80%]">
                 <div className="gap-6 flexBetween">
-                  <h2 className=" text-textSm text-light">Record New Audio</h2>
+                  <h3 className="font-semibold text-[26px] max-[486px]:text-textSm">
+                    Record New Audio
+                  </h3>
                   <IoIosClose
                     className="cursor-pointer text-textMd"
                     onClick={() => setRecordModal(false)}
@@ -353,13 +352,13 @@ const Ai = () => {
                     <>
                       <button
                         onClick={clearRecording}
-                        className="ml-2  border-2 border-border hover:bg-hover  text-light px-4 py-2 rounded-xl cursor-pointer max-w-md max-[480px]:w-full max-[480px]:mt-2 max-[480px]:ml-0"
+                        className="ml-2  border-2 border-border hover:bg-hover  text-light px-4 py-2 rounded-md cursor-pointer max-w-md max-[480px]:w-full max-[480px]:mt-2 max-[480px]:ml-0"
                       >
                         Re-record
                       </button>
 
                       <button
-                        className="ml-2  bg-[#fafafa] font-medium  text-black text-light px-4 py-2 rounded-xl cursor-pointer max-w-md max-[480px]:w-full max-[480px]:mt-2 max-[480px]:ml-0"
+                        className="ml-2  bg-[#fafafa]   text-black px-4 py-2 rounded-md cursor-pointer max-w-md max-[480px]:w-full max-[480px]:mt-2 max-[480px]:ml-0"
                         onClick={addRecordingToPrompt}
                       >
                         Add To prompt
@@ -368,7 +367,7 @@ const Ai = () => {
                   ) : (
                     <button
                       onClick={isRecording ? stopRecording : startRecording}
-                      className="border-2 border-border text-light px-4 py-2 rounded-xl hover:bg-cardDark ease-in-out duration-300 cursor-pointer w-full max-[480px]:mt-2 "
+                      className="border-2 border-border text-light px-4 py-2 rounded-md hover:bg-cardDark ease-in-out duration-300 cursor-pointer w-full max-[480px]:mt-2 "
                     >
                       {isRecording ? "Stop Recording" : "Start Recording"}
                     </button>

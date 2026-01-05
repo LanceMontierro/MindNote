@@ -13,6 +13,8 @@ const userSchema = mongoose.model(
         createdAt: { type: Date, default: Date.now },
         pinned: { type: Boolean, default: false },
         archived: { type: Boolean, default: false },
+        summary: { type: String, default: "" },
+        tags: { type: [String], default: [] },
       },
     ],
   })

@@ -71,22 +71,27 @@ const Settings = () => {
           {showDeleteModal && (
             <>
               <div className="fixed inset-0 bg-black opacity-50 "></div>
-              <div className=" flex flex-col gap-3 absolute p-4 transform -translate-x-1/2 -translate-y-1/2 bg-cardDark rounded-xl shadow-lg top-1/2 left-1/2 z-100 max-[480px]:w-[80%]">
-                <p className="max-[600px]:text-center">
-                  Are you sure you want to delete your account?
+              <div className=" flex flex-col gap-3 absolute p-6 transform -translate-x-1/2 -translate-y-1/2 bg-cardDark rounded-md shadow-lg top-1/2 left-1/2 z-100 max-[480px]:w-[80%]">
+                <h3 className="font-semibold text-[26px] max-[640px]:text-center">
+                  Delete Account
+                </h3>
+                <p className="mb-4  text-textSm text-descriptionText max-[640px]:text-center max-[640px]:text-textXs ">
+                  All of your data will be permanently deleted.
                 </p>
-                <button
-                  className="px-4 py-2 w-full bg-[#fafafa] hover:opacity-80 ease-in-out duration-300 rounded-xl text-black"
-                  onClick={handleDeleteAccount}
-                >
-                  Yes
-                </button>
-                <button
-                  className="w-full px-4 py-2 duration-300 ease-in-out border border-border hover:bg-hover rounded-xl "
-                  onClick={() => setShowDeleteModal(false)}
-                >
-                  No
-                </button>
+                <div className="flex gap-2 items-center max-[640px]:flex-col">
+                  <button
+                    className="px-4 py-2 w-full bg-[#fafafa] hover:opacity-80 ease-in-out duration-300 rounded-md text-black"
+                    onClick={handleDeleteAccount}
+                  >
+                    Delete Account
+                  </button>
+                  <button
+                    className="w-full px-4 py-2 duration-300 ease-in-out border border-border hover:bg-hover rounded-md "
+                    onClick={() => setShowDeleteModal(false)}
+                  >
+                    No
+                  </button>
+                </div>
               </div>
             </>
           )}

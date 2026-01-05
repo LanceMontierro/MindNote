@@ -100,7 +100,7 @@ const Home = () => {
 
         <div
           className={`card ${
-            activeFeature === "All Notes" ? "bg-secondary text-black" : ""
+            activeFeature === "All Notes" ? "btn-secondary " : ""
           }`}
           onClick={() => {
             handleActiveFeature("All Notes");
@@ -109,7 +109,7 @@ const Home = () => {
         >
           <div
             className={`w-10 h-10 rounded-xl flexCenter  ${
-              activeFeature === "All Notes" ? "bg-primary" : "bg-icons"
+              activeFeature === "All Notes" ? "btn-secondary" : "bg-icons"
             } `}
           >
             <IoIosNotifications className="w-6 h-6 " />
@@ -119,7 +119,7 @@ const Home = () => {
 
         <div
           className={`card ${
-            activeFeature === "Pinned Notes" ? "bg-secondary text-black" : ""
+            activeFeature === "Pinned Notes" ? "btn-secondary" : ""
           }`}
           onClick={() => {
             setActiveFeature("Pinned Notes");
@@ -127,8 +127,8 @@ const Home = () => {
           }}
         >
           <div
-            className={`w-10 h-10 rounded-xl flexCenter  ${
-              activeFeature === "Pinned Notes" ? "bg-primary" : "bg-icons"
+            className={`w-10 h-10 rounded-xl flexCenter hover:  ${
+              activeFeature === "Pinned Notes" ? "btn-secondary" : "bg-icons"
             } `}
           >
             <TbPinnedFilled className="w-6 h-6 " />
@@ -182,7 +182,7 @@ const Home = () => {
               </div>
 
               {showOptions[note._id] && (
-                <div className="absolute right-0 bottom-[-120px] bg-cardDark rounded-lg shadow-lg  z-200">
+                <div className="absolute right-0 bottom-[-120px] bg-cardDark rounded-lg shadow-lg z-200 max-h-[300px]">
                   <button
                     className="flex items-center w-full gap-2 px-4 py-4 text-left rounded-lg hover:bg-hover"
                     onClick={(e) => {
@@ -247,7 +247,6 @@ const Home = () => {
         {totalPage > 0 && (
           <div className="z-50 flex justify-center mt-4 ">
             <Pagination
-              color="primary"
               count={totalPage}
               page={currentPage}
               onChange={handlePageChange}
@@ -256,14 +255,14 @@ const Home = () => {
               sx={{
                 "& .MuiPaginationItem-root": {
                   color: "white", // number color
-                  borderColor: "#2563eb",
+                  borderColor: "#89C2FE26",
                 },
                 "& .Mui-selected": {
-                  backgroundColor: "#2563eb", // blue-500
+                  borderColor: "#89c2fe", // blue-500
                   color: "white",
                 },
                 "& .MuiPaginationItem-root:hover": {
-                  backgroundColor: "#2563eb", // hover blue
+                  backgroundColor: "#89C2FE40", // hover blue
                 },
               }}
             />
@@ -274,8 +273,8 @@ const Home = () => {
       {showModal && (
         <>
           <div className="fixed inset-0 bg-black opacity-50"></div>
-          <div className="absolute p-4 transform -translate-x-1/2 -translate-y-1/2 bg-cardDark rounded-xl shadow-lg top-1/2 left-1/2 z-100 max-[480px]:w-[80%]  ">
-            <h2 className="mb-4 text-textSm text-light ">Create New Note</h2>
+          <div className="absolute p-6 transform -translate-x-1/2 -translate-y-1/2 bg-cardDark rounded-xl shadow-lg top-1/2 left-1/2 z-100 max-[480px]:w-[80%]  ">
+            <h2 className="mb-4 text-textMd ">Create New Note</h2>
             <input
               type="text"
               placeholder="Please Enter at least title"

@@ -6,7 +6,7 @@ import { IoMdClose } from "react-icons/io";
 import { FaGithub, FaInstagram } from "react-icons/fa";
 import { navs } from "../../const";
 import { useNavigate, Link } from "react-router-dom";
-
+import { CiMicrophoneOn } from "react-icons/ci";
 const Header = () => {
   const { user, active, setActive } = useAppContext();
   const [openNavbar, setOpenNavbar] = useState(false);
@@ -75,6 +75,12 @@ const Header = () => {
                 </button>
               );
             })}
+            <button className="flex items-center py-3 px-2 gap-2 rounded-2xl btn-purple w-full justify-center">
+              <div className="rounded-full p-1 btn-purple ">
+                <CiMicrophoneOn className="text-[22px]" />
+              </div>
+              <span className="font-medium  text-textSm">Record</span>
+            </button>
 
             <a
               className={
@@ -138,7 +144,7 @@ const Header = () => {
                   Id: <span className="font-medium">{user.id}</span>
                 </p>
 
-                <p classNam e="font-semibold">
+                <p className="font-semibold">
                   Account Created:{" "}
                   <span className="font-medium">
                     {new Date(user.createdAt).toLocaleDateString("en-US", {

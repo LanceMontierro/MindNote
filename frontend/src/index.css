@@ -5,6 +5,7 @@
 @theme {
   --color-primary: #e5f1fe;
   --color-secondary: #89c2fe;
+  --color-secondary-rgb: 137, 194, 254;
   --bg-color: #ffffff;
 
   --color-cardDark: #171717;
@@ -12,8 +13,6 @@
   --color-border: #222222;
   --color-hover: #333333;
   --color-descriptionText: #a0a0a0;
-
-  /* --font-montserrat: "Montserrat", sans-serif; */
 
   --text-textXxl: 89px;
   --text-textXl: 52px;
@@ -70,10 +69,26 @@
 
 @layer components {
   .card {
-    @apply flex flex-col flex-1 gap-2 py-4 pl-6 pr-1 border-2 cursor-pointer rounded-2xl border-border bg-cardDark;
+    @apply flex flex-col flex-1 gap-2 py-4 pl-6 pr-1 border-2 cursor-pointer duration-200 ease-in-out rounded-2xl border-border bg-cardDark hover:bg-[#89C2FE40];
   }
   .cardSettings {
     @apply bg-cardDark py-4 pl-6 pr-1 rounded-lg w-full h-[64px] hover:bg-hover duration-200 ease-in-out cursor-pointer;
+  }
+  .btn-purple {
+    background: rgba(167, 139, 250, 0.15);
+    color: #a78bfa;
+  }
+  .btn-purple:hover {
+    background: rgba(167, 139, 250, 0.25);
+  }
+
+  .btn-secondary {
+    background: rgba(var(--color-secondary-rgb), 0.15);
+    color: var(--color-secondary);
+    border: 1px solid rgba(var(--color-secondary-rgb), 0.3);
+  }
+  .btn-secondary:hover {
+    background: rgba(var(--color-secondary-rgb), 0.25);
   }
 }
 

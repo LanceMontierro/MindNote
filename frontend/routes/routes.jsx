@@ -1,9 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
-import App from "./../src/App";
+import App from "../src/App";
 import Dashboard from "../src/Pages/Dashboard";
-import Settings from "./../src/Pages/Settings";
-import Note from "../src/Pages/Note";
-import { Archived, Prompt, Profile } from "../src/Pages";
+import Settings from "../src/Pages/Settings";
+
+import { Note, Archived, Prompt, Profile } from "../src/Pages";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -18,7 +18,7 @@ export const router = createBrowserRouter([
     element: <Settings />,
   },
   {
-    path: "/note/:id",
+    path: "/note/:id/:tab?",
     element: <Note />,
   },
   {

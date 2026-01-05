@@ -3,7 +3,8 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import { ClerkProvider } from "@clerk/clerk-react";
 import ContextApi from "../context/appContext.jsx";
-import { router } from "../routes/route.jsx";
+
+import { router } from "../routes/routes.jsx";
 import { RouterProvider } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;

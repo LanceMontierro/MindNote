@@ -1,19 +1,30 @@
-import { IoHomeOutline } from "react-icons/io5";
 import { CiSettings } from "react-icons/ci";
-import { BsRobot } from "react-icons/bs";
-
+import { RiRobot3Line } from "react-icons/ri";
+import { GoHome } from "react-icons/go";
 export const navs = [
   {
     name: "Home",
-    icon: IoHomeOutline,
+    icon: GoHome,
   },
   {
     name: "MindBot",
-    icon: BsRobot,
+    icon: RiRobot3Line,
   },
 
   {
     name: "Settings",
     icon: CiSettings,
+  },
+];
+
+export const noteTabs = [
+  {
+    name: "Transcript",
+  },
+  {
+    name: "Summary",
+  },
+  {
+    name: "Tags",
   },
 ];
