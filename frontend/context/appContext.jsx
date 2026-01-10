@@ -213,7 +213,6 @@ const ContextApi = ({ children }) => {
 
   const generateNote = async (userPrompt) => {
     try {
-      setLoading(true);
       if (!userAccount) return;
 
       // temporary AI placeholder so the UI shows 'Recognizing...'
@@ -258,8 +257,6 @@ const ContextApi = ({ children }) => {
       }
     } catch (error) {
       console.error("Error generating note:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -268,6 +265,7 @@ const ContextApi = ({ children }) => {
       if (!userAccount) {
         console.error("Please sign in to save a generated note.");
       }
+      setLoading(true);
 
       const response = await axios.post(`${API_URL}/ai/save-generated-note`, {
         title,
@@ -282,6 +280,8 @@ const ContextApi = ({ children }) => {
     } catch (error) {
       console.error("Error saving generated note:", error);
       notifyError(error.response?.data?.message);
+    } finally {
+      setLoading(false);
     }
   };
 

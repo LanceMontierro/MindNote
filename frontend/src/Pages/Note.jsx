@@ -12,6 +12,9 @@ import { FaTrashCan } from "react-icons/fa6";
 import { CiExport } from "react-icons/ci";
 import { noteTabs } from "../../const";
 import { notifyCopyClipBoard } from "../../toastUtils/toast";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
+import { styled } from "@mui/material/styles";
+
 const Note = () => {
   const { notes, updateNote, deleteNote, archivedNote } = useAppContext();
   const { id, tab } = useParams();
@@ -28,6 +31,19 @@ const Note = () => {
   const copyModalRef = useRef(null);
 
   const navigate = useNavigate();
+
+  console.log(tags);
+
+  const LightTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: theme.palette.common.white,
+      color: "rgba(0, 0, 0, 0.87)",
+      boxShadow: theme.shadows[1],
+      fontSize: 14,
+    },
+  }));
 
   // close copy modal when clicking outside or pressing Escape
   useEffect(() => {
@@ -250,12 +266,19 @@ const Note = () => {
                 <div className="flex flex-wrap gap-2 mt-4">
                   {tags.length > 0 ? (
                     tags.map((tag, index) => (
-                      <span
+                      <LightTooltip
                         key={index}
-                        className="px-3 py-1 text-sm rounded-full btn-purple  cursor-pointer transition"
+                        title={tag.meaning} // find the first position of space and slice from there
+                        placement="bottom"
+                        arrow
                       >
-                        #{tag}
-                      </span>
+                        <span
+                          key={index}
+                          className="px-3 py-1 text-sm rounded-full btn-purple  cursor-pointer transition"
+                        >
+                          #{tag.tag}
+                        </span>
+                      </LightTooltip>
                     ))
                   ) : (
                     <p className="text-descriptionText">No tags available</p>

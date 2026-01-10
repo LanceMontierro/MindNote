@@ -1,33 +1,16 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+// import { GoogleGenerativeAI } from "@google/generative-ai";
 import { GoogleGenAI } from "@google/genai";
-import userSchema from "../models/User.js";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+// const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
 });
 
 export const generateNote = async (req, res) => {
-  const { prompt, userId } = req.body;
+  const { prompt } = req.body;
+  const { model, config } = req.gemini;
 
   try {
-    const user = await userSchema.findOne({ userId });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    const tools = [
-      {
-        googleSearch: {},
-      },
-    ];
-    const config = {
-      thinkingConfig: {
-        thinkingBudget: -1,
-      },
-      tools,
-    };
-    const model = "gemini-2.5-flash";
     const contents = [
       {
         role: "user",
@@ -70,33 +53,22 @@ export const generateNote = async (req, res) => {
 };
 
 export const saveGeneratedNotes = async (req, res) => {
-  const { title, content, userId } = req.body;
+  const { title, content } = req.body;
+  const user = req.user;
+
+  const { model, config } = req.gemini;
+
+  if (!title || !content) {
+    return res.status(400).json({ message: "Title and content are required" });
+  }
 
   try {
-    const user = await userSchema.findOne({ userId });
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    const tools = [
-      {
-        googleSearch: {},
-      },
-    ];
-    const config = {
-      thinkingConfig: {
-        thinkingBudget: -1,
-      },
-      tools,
-    };
-    const model = "gemini-2.5-flash";
     const contents = [
       {
         role: "user",
         parts: [
           {
-            text: `Please summarize the following content in a concise manner while retaining all key information:\n\n${content} and also add tags related to the content. Format the response as follows:\n\nSummary:\n<your summary here>\n\nTags:\n<tag1>, <tag2>, <tag3>`,
+            text: `Please summarize the following content in a concise manner while retaining all key information:\n\n${content}\n\nAlso identify relevant tags for the content and their meanings. Format the response exactly as follows (use valid JSON for the TagsJSON section):\n\nSummary:\n<your summary here>\n\nTagsJSON:\n[{"tag":"...","meaning":"..."}, ...] \n\nONLY include the two labeled sections above (Summary and TagsJSON) and nothing else.`,
           },
         ],
       },
@@ -117,12 +89,79 @@ export const saveGeneratedNotes = async (req, res) => {
 
     console.log("AI analysis:", aiAnalyze);
 
-    const summary = aiAnalyze.split("Tags:")[0].replace("Summary:", "").trim();
-    const tagsText = aiAnalyze.split("Tags:")[1]?.trim() || "";
-    const tags = tagsText
-      .split(",")
-      .map((tag) => tag.trim())
-      .filter((tag) => tag.length > 0);
+    // Extract summary and tags robustly. Prefer TagsJSON (valid JSON). Fall back to parsing common formats.
+    let summary = "";
+    let tags = [];
+
+    // Try to capture the Summary section (up to TagsJSON or Tags or end)
+    const summaryMatch = aiAnalyze.match(
+      /Summary:\s*([\s\S]*?)(?:\n\s*TagsJSON:|\n\s*Tags:|$)/i
+    );
+    if (summaryMatch) {
+      summary = summaryMatch[1].trim(); // [0] is regex match, [1] is the captured group
+    } else {
+      summary = aiAnalyze
+        .split(/Tags:\s*/i)[0]
+        .replace(/Summary:/i, "")
+        .trim();
+    }
+
+    // First try to find a JSON array under TagsJSON:
+    const tagsJsonMatch = aiAnalyze.match(/TagsJSON:\s*(\[.*\])/is);
+    if (tagsJsonMatch) {
+      try {
+        const parsed = JSON.parse(tagsJsonMatch[1]);
+        if (Array.isArray(parsed)) {
+          tags = parsed
+            .map((t) => {
+              const tag = (t.tag || "").toString().trim();
+              const meaning = (t.meaning || "").toString().trim();
+
+              if (!tag) return null;
+
+              return {
+                tag,
+                meaning,
+              };
+            })
+            .filter(Boolean);
+        }
+      } catch (err) {
+        console.error("Failed to parse TagsJSON:", err);
+      }
+    }
+
+    // Fallback parsing when TagsJSON is not present or failed
+    if (!tags.length) {
+      const tagsText = (aiAnalyze.split(/Tags:\s*/i)[1] || "").trim();
+      if (tagsText) {
+        tags = tagsText
+          .split(",")
+          .map((entry) => {
+            const e = entry.trim();
+            const cleaned = e.replace(/^<|>$/g, "").trim();
+            // try separators like ':' or '-' first
+            let parts = cleaned.split(/[:\-–—]/);
+            let tagPart = parts.shift();
+            let meaningPart = parts.join(":").trim();
+            if (!meaningPart) {
+              // fallback: split by whitespace (first token is tag)
+              const parts2 = cleaned.split(/\s+/);
+              tagPart = parts2.shift();
+              meaningPart = parts2.join(" ");
+            }
+            const tag = (tagPart || "").replace(/[<>]/g, "").trim();
+            const meaning = (meaningPart || "").trim();
+            return tag
+              ? {
+                  tag,
+                  meaning,
+                }
+              : null;
+          })
+          .filter(Boolean);
+      }
+    }
 
     const existingNote = user.notes.find((note) => note.title === title);
 
@@ -153,18 +192,14 @@ export const saveGeneratedNotes = async (req, res) => {
 };
 
 export const generateNoteFromAudio = async (req, res) => {
-  const { userId } = req.body;
   const audioBuffer = req.file?.buffer;
+  const { model, config } = req.gemini;
 
   if (!audioBuffer) {
     return res.status(400).json({ message: "No audio file provided" });
   }
 
   try {
-    const tools = [{ googleSearch: {} }];
-    const config = { thinkingConfig: { thinkingBudget: -1 }, tools };
-    const model = "gemini-2.5-flash";
-
     const contents = [
       {
         role: "user",
@@ -190,7 +225,6 @@ export const generateNoteFromAudio = async (req, res) => {
     });
     let aiResponse = "";
     for await (const chunk of stream) {
-      // chunk.text contains incremental text for streaming responses
       aiResponse += chunk.text || "";
     }
 

@@ -1,15 +1,10 @@
 import userSchema from "../models/User.js";
 
 export const createNote = async (req, res) => {
-  const { title, content, userId } = req.body;
+  const { title, content } = req.body;
+  const user = req.user;
 
   try {
-    const user = await userSchema.findOne({ userId });
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
     if (!title || title.trim() === "") {
       return res.status(400).json({ message: "Title is required" });
     }
@@ -60,15 +55,10 @@ export const getNote = async (req, res) => {
 };
 
 export const updateNote = async (req, res) => {
-  const { title, content, userId, id } = req.body;
+  const { title, content, id } = req.body;
+  const user = req.user;
 
   try {
-    const user = await userSchema.findOne({ userId });
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
     if (!id) {
       return res.status(400).json({ message: "Note ID is required" });
     }
@@ -108,14 +98,10 @@ export const updateNote = async (req, res) => {
 };
 
 export const deleteNote = async (req, res) => {
-  const { id, userId } = req.body;
+  const { id } = req.body;
+  const user = req.user;
+
   try {
-    const user = await userSchema.findOne({ userId });
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
     const noteIndex = user.notes.findIndex(
       (note) => note._id.toString() === id
     );

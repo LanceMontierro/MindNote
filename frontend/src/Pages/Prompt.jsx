@@ -1,4 +1,4 @@
-import { Header, Sidebar } from "../Components";
+import { Header, Sidebar, Loading } from "../Components";
 import { IoIosAdd, IoIosClose } from "react-icons/io";
 import { MdSaveAlt } from "react-icons/md";
 import Tooltip from "@mui/material/Tooltip";
@@ -10,13 +10,14 @@ import TimeAgo from "timeago-react";
 import { TbTools } from "react-icons/tb";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { notifyCopyClipBoard } from "../../toastUtils/toast";
+
 const Ai = () => {
   const {
     prompt,
     setPrompt,
     generateNote,
     saveGeneratedNote,
-
+    loading,
     messages,
     setMessages,
     user,
@@ -284,6 +285,13 @@ const Ai = () => {
               </button>
             </div>
           </div>
+
+          {loading && (
+            // <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flexCenter z-50">
+            <Loading message="Generating summary and tags..." />
+            // </div>
+          )}
+
           {modal && (
             <>
               <div className="fixed inset-0 bg-black opacity-50"></div>
